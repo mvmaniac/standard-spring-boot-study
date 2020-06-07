@@ -1,0 +1,72 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id 'java'
+}
+
+group = 'io.devfactory'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl {
+        extendsFrom compileClasspath
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+def querydslSrcDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+    main.java.srcDir querydslSrcDir
+}
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslSrcDir
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'com.querydsl:querydsl-jpa:4.3.1'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.1'
+
+    implementation 'org.webjars:jquery:3.5.1'
+    implementation 'org.webjars:bootstrap:4.5.0'
+    implementation 'org.webjars:font-awesome:5.13.0'
+
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
