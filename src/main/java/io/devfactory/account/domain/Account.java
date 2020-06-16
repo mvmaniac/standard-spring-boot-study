@@ -1,9 +1,10 @@
 package io.devfactory.account.domain;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import static javax.persistence.FetchType.EAGER;
+import static lombok.AccessLevel.PROTECTED;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,11 +12,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-
-import java.time.LocalDateTime;
-
-import static javax.persistence.FetchType.EAGER;
-import static lombok.AccessLevel.PROTECTED;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = PROTECTED)
@@ -50,7 +50,8 @@ public class Account {
 
   private String location;
 
-  @Lob @Basic(fetch = EAGER)
+  @Lob
+  @Basic(fetch = EAGER)
   private String profileImage;
 
   private boolean studyCreatedByWeb;
@@ -89,6 +90,21 @@ public class Account {
     this.studyEnrollmentResultByEmail = studyEnrollmentResultByEmail;
     this.studyUpdatedByWeb = studyUpdatedByWeb;
     this.studyUpdatedByEmail = studyUpdatedByEmail;
+  }
+
+  public static Account of(String email, String nickname, String password) {
+    return Account.created()
+        .email(email)
+        .nickname(nickname)
+        .password(password)
+        .studyCreatedByWeb(true)
+        .studyEnrollmentResultByWeb(true)
+        .studyUpdatedByWeb(true)
+        .build();
+  }
+
+  public void generateEmailCheckToken() {
+    this.emailCheckToken = UUID.randomUUID().toString();
   }
 
 }

@@ -29,7 +29,7 @@ public class SignUpFormRequestView {
   private String password;
 
   @Builder(builderMethodName = "create")
-  public SignUpFormRequestView(String nickname, String email, String password) {
+  private SignUpFormRequestView(String nickname, String email, String password) {
     this.nickname = nickname;
     this.email = email;
     this.password = password;
