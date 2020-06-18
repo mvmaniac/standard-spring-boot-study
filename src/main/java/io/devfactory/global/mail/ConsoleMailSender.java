@@ -54,4 +54,5 @@ public class ConsoleMailSender implements JavaMailSender {
   public void send(SimpleMailMessage... simpleMessages) throws MailException {
 
   }
+
 }
