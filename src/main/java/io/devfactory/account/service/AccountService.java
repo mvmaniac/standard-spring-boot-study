@@ -3,6 +3,7 @@ package io.devfactory.account.service;
 import io.devfactory.account.domain.Account;
 import io.devfactory.account.dto.request.SignUpFormRequestView;
 import io.devfactory.account.repository.AccountRepository;
+import io.devfactory.global.config.security.service.UserAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -34,7 +35,6 @@ public class AccountService {
   }
 
   private Account saveAccount(@Valid SignUpFormRequestView signUpFormRequestView) {
-    // TODO: encoding 해야 함
     final Account account = Account.of(signUpFormRequestView.getEmail(),
         signUpFormRequestView.getNickname(),
         passwordEncoder.encode(signUpFormRequestView.getPassword()));
@@ -54,7 +54,7 @@ public class AccountService {
 
   public void login(Account loginAccount) {
     final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-        loginAccount.getNickname(), loginAccount.getPassword(),
+        new UserAccount(loginAccount), loginAccount.getPassword(),
         List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
     final SecurityContext context = SecurityContextHolder.getContext();

@@ -7,20 +7,20 @@
 
   <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
 
-  <link rel="stylesheet" th:href="@{/css/normalize.css}"/>
-  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" th:href="@{/node_modules/normalize.css/normalize.css}"/>
+  <link rel="stylesheet" th:href="@{/node_modules/bootstrap/dist/css/bootstrap.min.css}"/>
   <link rel="stylesheet" th:href="@{/css/error.css}"/>
 
-  <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">DevFactory</title>
+  <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">스터디올래 - DevFactory</title>
 </head>
 
 <!--/* // @formatter:off */-->
 <body>
   <div class="wrap">
-    <main th:insert="${main}" role="main" class="main"></main>
+    <main th:insert="${main}" class="container"></main>
   </div>
 
-  <script th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
+  <script th:src="@{/node_modules/{fortawesome}/fontawesome-free/js/all.min.js(fortawesome='@fortawesome')}"></script>
 </body>
 <!--/* // @formatter:on */-->
 

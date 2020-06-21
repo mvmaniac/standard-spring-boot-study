@@ -15,7 +15,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // @formatter:off
     http
       .authorizeRequests()
-        .antMatchers("/", "/login", "/sign-up", "/check-email", "/check-email-token", "/check-email-login", "/email-login", "/login-link")
+        .antMatchers("/", "/login", "/sign-up",
+            "/check-email", "/check-email-token", "/check-email-login",
+            "/email-login", "/login-link")
           .permitAll()
         .antMatchers(HttpMethod.GET, "/profile/*")
           .permitAll()
@@ -27,7 +29,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   public void configure(WebSecurity web) {
-    web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    web.ignoring()
+        .antMatchers("/node_modules/**")
+        .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
   }
 
 }

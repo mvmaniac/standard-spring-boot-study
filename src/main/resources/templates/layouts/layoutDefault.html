@@ -11,26 +11,27 @@
 
   <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
 
-  <link rel="stylesheet" th:href="@{/css/normalize.css}"/>
-  <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" th:href="@{/node_modules/normalize.css/normalize.css}"/>
+  <link rel="stylesheet" th:href="@{/node_modules/bootstrap/dist/css/bootstrap.min.css}"/>
   <link rel="stylesheet" th:href="@{/css/common.css}"/>
 
   <style th:replace="${css}"></style>
 
-  <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">DevFactory</title>
+  <title th:replace="${title}" th:assert="${!#strings.isEmpty(title)}">스터디올래 - DevFactory</title>
 </head>
 
 <!--/* // @formatter:off */-->
-<body>
+<body class="bg-light">
   <div class="wrap">
-    <header th:insert="~{layouts/fragments/header :: header}" class="header bg-dark"></header>
-    <main th:insert="${main}" role="main" class="main"></main>
-    <footer th:insert="~{layouts/fragments/footer :: footer}" class="footer"></footer>
+    <header th:replace="~{layouts/fragments/header :: header}"></header>
+    <main th:replace="${main}"></main>
+    <footer th:replace="~{layouts/fragments/footer :: footer}"></footer>
   </div>
 
-  <script th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
-  <script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
-  <script th:src="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
+  <script th:src="@{/node_modules/{fortawesome}/fontawesome-free/js/all.min.js(fortawesome='@fortawesome')}"></script>
+  <script th:src="@{/node_modules/jquery/dist/jquery.min.js}"></script>
+  <script th:src="@{/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/node_modules/jdenticon/dist/jdenticon.min.js}"></script>
   <script th:src="@{/js/common.js}"></script>
 
   <script th:replace="${js}"></script>
