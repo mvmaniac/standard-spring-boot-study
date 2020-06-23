@@ -34,15 +34,7 @@ public class AccountService {
     return savedAccount;
   }
 
-  private Account saveAccount(@Valid SignUpFormRequestView signUpFormRequestView) {
-    final Account account = Account.of(signUpFormRequestView.getEmail(),
-        signUpFormRequestView.getNickname(),
-        passwordEncoder.encode(signUpFormRequestView.getPassword()));
-
-    return accountRepository.save(account);
-  }
-
-  private void sendSignUpConfirmEmail(Account savedAccount) {
+  public void sendSignUpConfirmEmail(Account savedAccount) {
     final SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
     simpleMailMessage.setTo(savedAccount.getEmail());
     simpleMailMessage.setSubject("스터디올래, 회원 가입 인증");
@@ -50,6 +42,14 @@ public class AccountService {
         "&email=" + savedAccount.getEmail());
 
     javaMailSender.send(simpleMailMessage);
+  }
+
+  private Account saveAccount(@Valid SignUpFormRequestView signUpFormRequestView) {
+    final Account account = Account.of(signUpFormRequestView.getEmail(),
+        signUpFormRequestView.getNickname(),
+        passwordEncoder.encode(signUpFormRequestView.getPassword()));
+
+    return accountRepository.save(account);
   }
 
   public void login(Account loginAccount) {

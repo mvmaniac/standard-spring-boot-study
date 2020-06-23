@@ -40,6 +40,8 @@ public class Account {
 
   private String emailCheckToken;
 
+  private LocalDateTime emailCheckTokenGeneratedAt;
+
   private LocalDateTime joinedAt;
 
   private String bio;
@@ -67,17 +69,19 @@ public class Account {
   private boolean studyUpdatedByEmail;
 
   @Builder(builderMethodName = "created")
-  private Account(String email, String nickname, String password, boolean emailVerified,
-      String emailCheckToken, LocalDateTime joinedAt, String bio, String url, String occupation,
-      String location, String profileImage, boolean studyCreatedByWeb, boolean studyCreatedByEmail,
-      boolean studyEnrollmentResultByWeb, boolean studyEnrollmentResultByEmail,
-      boolean studyUpdatedByWeb, boolean studyUpdatedByEmail) {
+  public Account(String email, String nickname, String password, boolean emailVerified,
+      String emailCheckToken, LocalDateTime emailCheckTokenGeneratedAt, LocalDateTime joinedAt,
+      String bio, String url, String occupation, String location, String profileImage,
+      boolean studyCreatedByWeb, boolean studyCreatedByEmail, boolean studyEnrollmentResultByWeb,
+      boolean studyEnrollmentResultByEmail, boolean studyUpdatedByWeb,
+      boolean studyUpdatedByEmail) {
 
     this.email = email;
     this.nickname = nickname;
     this.password = password;
     this.emailVerified = emailVerified;
     this.emailCheckToken = emailCheckToken;
+    this.emailCheckTokenGeneratedAt = emailCheckTokenGeneratedAt;
     this.joinedAt = joinedAt;
     this.bio = bio;
     this.url = url;
@@ -105,6 +109,7 @@ public class Account {
 
   public void generateEmailCheckToken() {
     this.emailCheckToken = UUID.randomUUID().toString();
+    this.emailCheckTokenGeneratedAt = LocalDateTime.now();
   }
 
   public void completeSingUp() {
@@ -115,4 +120,9 @@ public class Account {
   public boolean isValidToken(String token) {
     return this.emailCheckToken.equals(token);
   }
+
+  public boolean canSendConfirmEmail() {
+    return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
+  }
+
 }

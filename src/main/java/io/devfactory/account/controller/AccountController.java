@@ -9,6 +9,7 @@ import io.devfactory.account.service.AccountService;
 import io.devfactory.account.validator.SignUpFormRequestViewValidator;
 import java.util.Objects;
 import javax.validation.Valid;
+import io.devfactory.global.config.security.service.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,6 +74,24 @@ public class AccountController {
     model.addAttribute("numberOfUser", accountRepository.count());
     model.addAttribute("nickname", findAccount.getNickname());
     return viewName;
+  }
+
+  @GetMapping("/check-email")
+  public String checkEmail(@CurrentUser Account account, Model model) {
+    model.addAttribute("email", account.getEmail());
+    return "views/account/checkEmail";
+  }
+
+  @GetMapping("/resend-confirm-email")
+  public String resendConfirmEmail(@CurrentUser Account account, Model model) {
+    if (!account.canSendConfirmEmail()) {
+      model.addAttribute("error", "인증 이메일은 1시간에 한번만 전송할 수 있습니다.");
+      model.addAttribute("email", account.getEmail());
+      return "views/account/checkEmail";
+    }
+
+    accountService.sendSignUpConfirmEmail(account);
+    return  REDIRECT.apply("/");
   }
 
 }

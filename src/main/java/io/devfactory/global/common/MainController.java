@@ -18,4 +18,9 @@ public class MainController {
     return "views/index";
   }
 
+  @GetMapping("/login")
+  public String viewLogin() {
+    return "views/login";
+  }
+
 }
