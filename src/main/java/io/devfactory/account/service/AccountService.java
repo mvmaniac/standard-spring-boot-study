@@ -1,6 +1,7 @@
 package io.devfactory.account.service;
 
 import io.devfactory.account.domain.Account;
+import io.devfactory.account.dto.ProfileFormView;
 import io.devfactory.account.dto.request.SignUpFormRequestView;
 import io.devfactory.account.repository.AccountRepository;
 import io.devfactory.global.config.security.service.UserAccount;
@@ -57,6 +58,12 @@ public class AccountService {
 
     final SecurityContext context = SecurityContextHolder.getContext();
     context.setAuthentication(token);
+  }
+
+  @Transactional
+  public void updateProfile(Account account, ProfileFormView view) {
+    account.updateProfile(view);
+    accountRepository.save(account);
   }
 
   private Account saveAccount(@Valid SignUpFormRequestView signUpFormRequestView) {

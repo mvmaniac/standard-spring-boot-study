@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import io.devfactory.account.dto.ProfileFormView;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -125,4 +126,10 @@ public class Account {
     return this.emailCheckTokenGeneratedAt.isBefore(LocalDateTime.now().minusHours(1));
   }
 
+  public void updateProfile(ProfileFormView view) {
+    this.bio = view.getBio();
+    this.url = view.getUrl();
+    this.occupation = view.getOccupation();
+    this.location = view.getLocation();
+  }
 }
