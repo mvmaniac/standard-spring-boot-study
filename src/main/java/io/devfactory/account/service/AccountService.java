@@ -44,12 +44,10 @@ public class AccountService {
     javaMailSender.send(simpleMailMessage);
   }
 
-  private Account saveAccount(@Valid SignUpFormRequestView signUpFormRequestView) {
-    final Account account = Account.of(signUpFormRequestView.getEmail(),
-        signUpFormRequestView.getNickname(),
-        passwordEncoder.encode(signUpFormRequestView.getPassword()));
-
-    return accountRepository.save(account);
+  @Transactional
+  public void completeSingUp(Account findAccount) {
+    findAccount.completeSingUp();
+    login(findAccount);
   }
 
   public void login(Account loginAccount) {
@@ -59,6 +57,14 @@ public class AccountService {
 
     final SecurityContext context = SecurityContextHolder.getContext();
     context.setAuthentication(token);
+  }
+
+  private Account saveAccount(@Valid SignUpFormRequestView signUpFormRequestView) {
+    final Account account = Account.of(signUpFormRequestView.getEmail(),
+        signUpFormRequestView.getNickname(),
+        passwordEncoder.encode(signUpFormRequestView.getPassword()));
+
+    return accountRepository.save(account);
   }
 
 }
