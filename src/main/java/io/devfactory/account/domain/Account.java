@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import io.devfactory.account.dto.NotificationFormView;
 import io.devfactory.account.dto.ProfileFormView;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -131,5 +132,20 @@ public class Account {
     this.url = view.getUrl();
     this.occupation = view.getOccupation();
     this.location = view.getLocation();
+    this.profileImage = view.getProfileImage();
   }
+
+  public void updatePassword(String newPassword) {
+    this.password = newPassword;
+  }
+
+  public void updateNotification(NotificationFormView view) {
+    this.studyCreatedByWeb = view.isStudyCreatedByWeb();
+    this.studyCreatedByEmail = view.isStudyCreatedByEmail();
+    this.studyUpdatedByWeb = view.isStudyUpdatedByWeb();
+    this.studyUpdatedByEmail = view.isStudyUpdatedByEmail();
+    this.studyEnrollmentResultByEmail =view.isStudyEnrollmentResultByEmail();
+    this.studyEnrollmentResultByWeb = view.isStudyEnrollmentResultByWeb();
+  }
+  
 }

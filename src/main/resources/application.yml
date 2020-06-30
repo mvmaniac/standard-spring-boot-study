@@ -18,10 +18,15 @@ spring:
     restart.enabled: false
     livereload.enabled: true
 
+server:
+  tomcat:
+    max-http-form-post-size: 5MB
+
 logging:
   level:
     io.devfactory: debug
     org.hibernate.SQL: debug
+    org.springframework: debug
 
 decorator:
   datasource:

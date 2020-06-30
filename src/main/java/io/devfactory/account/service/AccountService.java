@@ -1,6 +1,7 @@
 package io.devfactory.account.service;
 
 import io.devfactory.account.domain.Account;
+import io.devfactory.account.dto.NotificationFormView;
 import io.devfactory.account.dto.ProfileFormView;
 import io.devfactory.account.dto.request.SignUpFormRequestView;
 import io.devfactory.account.repository.AccountRepository;
@@ -66,6 +67,12 @@ public class AccountService {
     accountRepository.save(account);
   }
 
+  @Transactional
+  public void updatePassword(Account account, String newPassword) {
+    account.updatePassword(passwordEncoder.encode(newPassword));
+    accountRepository.save(account);
+  }
+
   private Account saveAccount(@Valid SignUpFormRequestView signUpFormRequestView) {
     final Account account = Account.of(signUpFormRequestView.getEmail(),
         signUpFormRequestView.getNickname(),
@@ -74,4 +81,10 @@ public class AccountService {
     return accountRepository.save(account);
   }
 
+  @Transactional
+  public void updateNotification(Account account, NotificationFormView view) {
+    account.updateNotification(view);
+    accountRepository.save(account);
+
+  }
 }

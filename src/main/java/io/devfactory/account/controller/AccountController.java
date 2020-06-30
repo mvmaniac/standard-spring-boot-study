@@ -29,7 +29,7 @@ public class AccountController {
   private final AccountService accountService;
   private final AccountRepository accountRepository;
 
-  @InitBinder("/sign-up/signUpFormRequestView")
+  @InitBinder("signUpFormRequestView")
   public void initBinder(WebDataBinder webDataBinder) {
     webDataBinder.addValidators(signUpFormRequestViewValidator);
   }
