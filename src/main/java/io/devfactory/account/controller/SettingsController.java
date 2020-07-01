@@ -87,14 +87,14 @@ public class SettingsController {
   }
 
   @GetMapping(SETTINGS_NOTIFICATION_URL)
-  public String updateNotificationsForm(@CurrentUser Account account, Model model) {
+  public String viewNotificationForm(@CurrentUser Account account, Model model) {
     model.addAttribute(account);
     model.addAttribute(NotificationFormView.of(account));
     return SETTINGS_NOTIFICATION_VIEW_NAME;
   }
 
   @PostMapping(SETTINGS_NOTIFICATION_URL)
-  public String updateNotifications(@CurrentUser Account account, @Valid NotificationFormView view,
+  public String modifyNotification(@CurrentUser Account account, @Valid NotificationFormView view,
       Errors errors, Model model, RedirectAttributes attributes) {
 
     if (errors.hasErrors()) {

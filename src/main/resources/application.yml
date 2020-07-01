@@ -5,6 +5,11 @@ spring:
   profiles:
     active: local
 
+  datasource:
+    initialization-mode: always
+    platform: h2
+    data: classpath:sql/data-${spring.datasource.platform}.sql
+
   jpa:
     show-sql: false
     hibernate:
