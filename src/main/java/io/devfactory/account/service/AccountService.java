@@ -6,7 +6,9 @@ import io.devfactory.account.dto.ProfileFormView;
 import io.devfactory.account.dto.request.SignUpFormRequestView;
 import io.devfactory.account.repository.AccountRepository;
 import io.devfactory.global.config.security.service.UserAccount;
+import io.devfactory.tag.domain.Tag;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -27,6 +31,7 @@ public class AccountService {
   private final AccountRepository accountRepository;
   private final JavaMailSender javaMailSender;
   private final PasswordEncoder passwordEncoder;
+  private final ModelMapper modelMapper;
 
   @Transactional
   public Account processSaveAccount(SignUpFormRequestView signUpFormRequestView) {
@@ -63,7 +68,7 @@ public class AccountService {
 
   @Transactional
   public void updateProfile(Account account, ProfileFormView view) {
-    account.updateProfile(view);
+    modelMapper.map(view, account);
     accountRepository.save(account);
   }
 
@@ -71,6 +76,51 @@ public class AccountService {
   public void updatePassword(Account account, String newPassword) {
     account.updatePassword(passwordEncoder.encode(newPassword));
     accountRepository.save(account);
+  }
+
+  @Transactional
+  public void updateNotification(Account account, NotificationFormView view) {
+    modelMapper.map(view, account);
+    accountRepository.save(account);
+
+  }
+
+  @Transactional
+  public void updateNickname(Account account, String nickname) {
+    account.updateNickname(nickname);
+    accountRepository.save(account);
+    login(account); // 닉네임 변경을 위한 로그인 처리
+  }
+
+  @Transactional
+  public void sendLoginLink(Account account) {
+    account.generateEmailCheckToken();
+
+    SimpleMailMessage mailMessage = new SimpleMailMessage();
+
+    mailMessage.setTo(account.getEmail());
+    mailMessage.setSubject("스터디올래, 로그인 링크");
+    mailMessage.setText("/login-by-email?token=" + account.getEmailCheckToken() +
+        "&email=" + account.getEmail());
+
+    javaMailSender.send(mailMessage);
+  }
+
+  public Set<Tag> getTags(Account account) {
+    final Optional<Account> findAccount = accountRepository.findById(account.getId());
+    return findAccount.orElseThrow().getTags();
+  }
+
+  @Transactional
+  public void addTag(Account account, Tag tag) {
+    final Optional<Account> findAccount = accountRepository.findById(account.getId());
+    findAccount.ifPresent(a -> a.getTags().add(tag));
+  }
+
+  @Transactional
+  public void removeTag(Account account, Tag tag) {
+    final Optional<Account> findAccount = accountRepository.findById(account.getId());
+    findAccount.ifPresent(a -> a.getTags().remove(tag));
   }
 
   private Account saveAccount(@Valid SignUpFormRequestView signUpFormRequestView) {
@@ -81,10 +131,4 @@ public class AccountService {
     return accountRepository.save(account);
   }
 
-  @Transactional
-  public void updateNotification(Account account, NotificationFormView view) {
-    account.updateNotification(view);
-    accountRepository.save(account);
-
-  }
 }

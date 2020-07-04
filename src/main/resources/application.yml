@@ -31,7 +31,6 @@ logging:
   level:
     io.devfactory: debug
     org.hibernate.SQL: debug
-    org.springframework: debug
 
 decorator:
   datasource:

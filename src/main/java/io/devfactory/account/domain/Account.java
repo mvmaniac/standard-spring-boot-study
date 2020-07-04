@@ -4,6 +4,10 @@ import static javax.persistence.FetchType.EAGER;
 import static lombok.AccessLevel.PROTECTED;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -11,13 +15,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import io.devfactory.account.dto.NotificationFormView;
 import io.devfactory.account.dto.ProfileFormView;
+import io.devfactory.tag.domain.Tag;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = PROTECTED)
@@ -69,6 +76,9 @@ public class Account {
   private boolean studyUpdatedByWeb;
 
   private boolean studyUpdatedByEmail;
+
+  @ManyToMany
+  private Set<Tag> tags = new HashSet<>();
 
   @Builder(builderMethodName = "created")
   public Account(String email, String nickname, String password, boolean emailVerified,
@@ -147,5 +157,9 @@ public class Account {
     this.studyEnrollmentResultByEmail =view.isStudyEnrollmentResultByEmail();
     this.studyEnrollmentResultByWeb = view.isStudyEnrollmentResultByWeb();
   }
-  
+
+  public void updateNickname(String nickname) {
+    this.nickname = nickname;
+  }
+
 }

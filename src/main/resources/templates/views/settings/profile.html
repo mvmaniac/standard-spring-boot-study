@@ -125,33 +125,32 @@
 <script th:src="@{/node_modules/jquery-cropper/dist/jquery-cropper.min.js}"></script>
 <script>
   $(function () {
-    cropper = '';
-    var $confirmBtn = $("#confirm-button"),
-        $resetBtn = $("#reset-button"),
-        $cutBtn = $("#cut-button"),
-        $newProfileImage = $("#new-profile-image"),
-        $currentProfileImage = $("#current-profile-image"),
-        $resultImage = $("#cropped-new-profile-image"),
-        $profileImage = $("#profileImage");
+    var $confirmBtn = $('#confirm-button'),
+        $resetBtn = $('#reset-button'),
+        $cutBtn = $('#cut-button'),
+        $newProfileImage = $('#new-profile-image'),
+        $currentProfileImage = $('#current-profile-image'),
+        $resultImage = $('#cropped-new-profile-image'),
+        $profileImage = $('#profileImage'),
+        cropper = '';
 
     $newProfileImage.hide();
     $cutBtn.hide();
     $resetBtn.hide();
     $confirmBtn.hide();
 
-    $("#profile-image-file").change(function (e) {
+    $('#profile-image-file').change(function (e) {
       if (e.target.files.length === 1) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
           if (e.target.result) {
-            var img = document.createElement("img");
+            var img = document.createElement('img');
             img.id = 'new-profile';
             img.src = e.target.result;
             img.width = 250;
 
-            $newProfileImage.html(img);
-            $newProfileImage.show();
+            $newProfileImage.html(img).show();
             $currentProfileImage.hide();
 
             var $newImage = $(img);
@@ -180,13 +179,13 @@
 
     $cutBtn.click(function () {
       var dataUrl = cropper.getCroppedCanvas().toDataURL(),
-          newImage = document.createElement("img");
+          newImage = document.createElement('img');
 
-      newImage.id = "cropped-new-profile-image";
+      newImage.id = 'cropped-new-profile-image';
       newImage.src = dataUrl;
       newImage.width = 125;
-      $resultImage.html(newImage);
-      $resultImage.show();
+
+      $resultImage.html(newImage).show();
       $confirmBtn.show();
 
       $confirmBtn.click(function () {

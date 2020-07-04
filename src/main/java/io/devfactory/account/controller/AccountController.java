@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequiredArgsConstructor
 @Controller
@@ -105,6 +106,44 @@ public class AccountController {
     model.addAttribute("isOwner", findAccount.equals(account));
 
     return "views/account/profile";
+  }
+
+  @GetMapping("/email-login")
+  public String viewEmailLoginForm() {
+    return "views/account/emailLogin";
+  }
+
+  @PostMapping("/email-login")
+  public String sendEmailLoginLink(String email, Model model, RedirectAttributes attributes) {
+    final Account findAccount = accountRepository.findByEmail(email);
+    final String viewName = "views/account/emailLogin";
+
+    if (Objects.isNull(findAccount)) {
+      model.addAttribute("error", "유효한 이메일 주소가 아닙니다.");
+      return viewName;
+    }
+
+    if (!findAccount.canSendConfirmEmail()) {
+      model.addAttribute("error", "이메일 로그인은 1시간 뒤에 사용할 수 있습니다.");
+      return viewName;
+    }
+
+    accountService.sendLoginLink(findAccount);
+    attributes.addFlashAttribute("message", "이메일 인증 메일을 발송 했습니다.");
+    return REDIRECT.apply("email-login");
+  }
+
+  @GetMapping("/login-by-email")
+  public String loginByEmail(String token, String email, Model model) {
+    final Account findAccount = accountRepository.findByEmail(email);
+
+    if (Objects.isNull(findAccount) || !findAccount.isValidToken(token)) {
+      model.addAttribute("error", "로그인할 수 없습니다.");
+      return "views/account/loggedInByEmail";
+    }
+
+    accountService.login(findAccount);
+    return "views/account/loggedInByEmail";
   }
 
 }

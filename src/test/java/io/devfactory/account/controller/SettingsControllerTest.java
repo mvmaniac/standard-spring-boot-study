@@ -3,6 +3,7 @@ package io.devfactory.account.controller;
 import static io.devfactory.account.controller.SettingsController.SETTINGS_PROFILE_URL;
 import static io.devfactory.account.controller.SettingsController.SETTINGS_PROFILE_VIEW_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -44,7 +45,7 @@ class SettingsControllerTest {
     accountRepository.deleteAll();
   }
 
-  @WithAccount("dev")
+  @WithAccount("test")
   @DisplayName("프로필 수정폼")
   @Test
   void viewProfileForm() throws Exception {
@@ -58,7 +59,7 @@ class SettingsControllerTest {
     ;
   }
 
-  @WithAccount("dev")
+  @WithAccount("test")
   @DisplayName("프로필 수정하기 - 입력값 정상")
   @Test
   void updateProfile() throws Exception {
@@ -73,11 +74,11 @@ class SettingsControllerTest {
         .andExpect(flash().attributeExists("message"))
     ;
 
-    final Account findAccount = accountRepository.findByNickname("dev");
+    final Account findAccount = accountRepository.findByNickname("test");
     assertEquals(bio, findAccount.getBio());
   }
 
-  @WithAccount("dev")
+  @WithAccount("test")
   @DisplayName("프로필 수정하기 - 입력값 에러")
   @Test
   void updateProfile_error() throws Exception {
@@ -94,14 +95,14 @@ class SettingsControllerTest {
         .andExpect(model().hasErrors())
     ;
 
-    final Account findAccount = accountRepository.findByNickname("dev");
+    final Account findAccount = accountRepository.findByNickname("test");
     assertNull(findAccount.getBio());
   }
 
-  @WithAccount("dev")
+  @WithAccount("test")
   @DisplayName("패스워드 수정 폼")
   @Test
-  void updatePassword_form() throws Exception {
+  void viewPasswordForm() throws Exception {
     mockMvc
         .perform(get(SettingsController.SETTINGS_PASSWORD_URL))
         .andExpect(status().isOk())
@@ -109,7 +110,7 @@ class SettingsControllerTest {
         .andExpect(model().attributeExists("passwordFormView"));
   }
 
-  @WithAccount("dev")
+  @WithAccount("test")
   @DisplayName("패스워드 수정 - 입력값 정상")
   @Test
   void updatePassword_success() throws Exception {
@@ -122,11 +123,11 @@ class SettingsControllerTest {
         .andExpect(redirectedUrl(SettingsController.SETTINGS_PASSWORD_URL))
         .andExpect(flash().attributeExists("message"));
 
-    Account keesun = accountRepository.findByNickname("dev");
-    assertTrue(passwordEncoder.matches("12345678", keesun.getPassword()));
+    Account findAccount = accountRepository.findByNickname("test");
+    assertTrue(passwordEncoder.matches("12345678", findAccount.getPassword()));
   }
 
-  @WithAccount("dev")
+  @WithAccount("test")
   @DisplayName("패스워드 수정 - 입력값 에러 - 패스워드 불일치")
   @Test
   void updatePassword_fail() throws Exception {
@@ -140,6 +141,49 @@ class SettingsControllerTest {
         .andExpect(model().hasErrors())
         .andExpect(model().attributeExists("passwordFormView"))
         .andExpect(model().attributeExists("account"));
+  }
+
+  @WithAccount("test")
+  @DisplayName("닉네임 수정 폼")
+  @Test
+  void viewAccountForm() throws Exception {
+    mockMvc.perform(get(SettingsController.SETTINGS_ACCOUNT_URL))
+        .andExpect(status().isOk())
+        .andExpect(model().attributeExists("account"))
+        .andExpect(model().attributeExists("nicknameFormView"));
+  }
+
+  @WithAccount("test")
+  @DisplayName("닉네임 수정하기 - 입력값 정상")
+  @Test
+  void updateAccount_success() throws Exception {
+    String newNickname = "대표백수";
+
+    mockMvc
+        .perform(post(SettingsController.SETTINGS_ACCOUNT_URL)
+            .param("nickname", newNickname)
+            .with(csrf()))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(redirectedUrl(SettingsController.SETTINGS_ACCOUNT_URL))
+        .andExpect(flash().attributeExists("message"));
+
+    assertNotNull(accountRepository.findByNickname("대표백수"));
+  }
+
+  @WithAccount("test")
+  @DisplayName("닉네임 수정하기 - 입력값 에러")
+  @Test
+  void updateAccount_fail() throws Exception {
+    String newNickname = "¯\\_(ツ)_/¯";
+    mockMvc
+        .perform(post(SettingsController.SETTINGS_ACCOUNT_URL)
+            .param("nickname", newNickname)
+            .with(csrf()))
+        .andExpect(status().isOk())
+        .andExpect(view().name(SettingsController.SETTINGS_ACCOUNT_VIEW_NAME))
+        .andExpect(model().hasErrors())
+        .andExpect(model().attributeExists("account"))
+        .andExpect(model().attributeExists("nicknameFormView"));
   }
 
 }

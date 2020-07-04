@@ -4,6 +4,7 @@ INSERT INTO tb_account (
     , nickname
     , password
     , email_verified
+    , email_check_token_generated_at
     , study_created_by_web
     , study_created_by_email
     , study_enrollment_result_by_web
@@ -16,6 +17,7 @@ INSERT INTO tb_account (
     , 'dev'
     , '{bcrypt}$2a$10$lVaCkvmGOIvljR8XokISE.9WNLVNG902yVNPkoAYEmNqPjDiPpVt.'
     , false
+    , current_timestamp
     , true
     , false
     , true

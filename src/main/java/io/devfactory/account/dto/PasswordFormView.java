@@ -18,14 +18,4 @@ public class PasswordFormView {
   @Length(min = 8, max = 50)
   private String newPasswordConfirm;
 
-  @Builder(builderMethodName = "create")
-  private PasswordFormView(String newPassword, String newPasswordConfirm) {
-    this.newPassword = newPassword;
-    this.newPasswordConfirm = newPasswordConfirm;
-  }
-
-  public static PasswordFormView of() {
-    return new PasswordFormView();
-  }
-
 }
