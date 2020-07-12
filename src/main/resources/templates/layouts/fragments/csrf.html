@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!--/* ajax 에서 csrf 처리를 위해 서버에서 값을 받음 */-->
+<script th:inline="javascript" th:fragment="csrf">
+  $(function () {
+    var csrfToken = /*[[${_csrf.token}]]*/ null,
+        csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+
+    $(document).ajaxSend(function (e, xhr, options) {
+      xhr.setRequestHeader(csrfHeader, csrfToken);
+    });
+  });
+</script>
+
+</html>
+

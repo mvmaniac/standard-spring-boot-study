@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import io.devfactory.account.dto.NotificationFormView;
 import io.devfactory.account.dto.ProfileFormView;
 import io.devfactory.tag.domain.Tag;
+import io.devfactory.zone.domain.Zone;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -80,7 +81,10 @@ public class Account {
   @ManyToMany
   private Set<Tag> tags = new HashSet<>();
 
-  @Builder(builderMethodName = "created")
+  @ManyToMany
+  private Set<Zone> zones = new HashSet<>();
+
+  @Builder(builderMethodName = "create")
   public Account(String email, String nickname, String password, boolean emailVerified,
       String emailCheckToken, LocalDateTime emailCheckTokenGeneratedAt, LocalDateTime joinedAt,
       String bio, String url, String occupation, String location, String profileImage,
@@ -109,7 +113,7 @@ public class Account {
   }
 
   public static Account of(String email, String nickname, String password) {
-    return Account.created()
+    return Account.create()
         .email(email)
         .nickname(nickname)
         .password(password)

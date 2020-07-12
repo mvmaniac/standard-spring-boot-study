@@ -21,22 +21,23 @@
 <main th:ref="main">
   <div class="d-flex mt-5 justify-content-center">
     <div class="col-2"
-         th:insert="~{layouts/fragments/settingsMenu :: settings-menu(currentMenu='tag')}">
+         th:insert="~{layouts/fragments/settingsMenu :: settings-menu(currentMenu='zones')}">
     </div>
 
     <div class="col-8">
       <div class="row">
-        <h2 class="col-12">관심있는 스터디 주제</h2>
+        <h2 class="col-12">주요 활동 지역</h2>
       </div>
       <div class="row">
         <div class="col-12">
           <div class="alert alert-info" role="alert">
-            참여하고 싶은 스터디 주제를 입력해 주세요. 해당 주제의 스터디가 생기면 알림을 받을 수 있습니다.
-            태그를 입력하고 콤마(,) 또는 엔터를 입력하세요.
+            주로 스터디를 다닐 수 있는 지역을 등록하세요. 해당 지역에 스터디가 생기면 알림을 받을 수 있습니다.<br/>
+            시스템에 등록된 지역만 선택할 수 있습니다.
           </div>
-          <label for="tags"></label>
-          <input id="tags" type="text" name="tags" class="tagify-outside"
-                 th:value="${#strings.listJoin(tags, ',')}"/>
+          <div id="whiteList" th:text="${whiteList}" hidden></div>
+          <label for="zones"></label>
+          <input id="zones" type="text" name="tags" class="tagify-outside"
+                 th:value="${#strings.listJoin(zones, ',')}" />
         </div>
       </div>
     </div>
@@ -44,24 +45,17 @@
 </main>
 
 <script th:src="@{/node_modules/{yaireo}/tagify/dist/tagify.min.js(yaireo='@yaireo')}"></script>
-<script th:inline="javascript">
-  $(function () {
-    var csrfToken = /*[[${_csrf.token}]]*/ null,
-        csrfHeader = /*[[${_csrf.headerName}]]*/ null;
-
-    $(document).ajaxSend(function (e, xhr, options) {
-      xhr.setRequestHeader(csrfHeader, csrfToken);
-    });
-  });
-</script>
+<script th:replace="~{layouts/fragments/csrf :: csrf}"></script>
 <script>
   $(function () {
-    var tagInput = document.querySelector('#tags'),
+    var tagInput = document.querySelector('#zones'),
         tagify = new Tagify(tagInput, {
-          pattern: /^.{0,20}$/,
+          enforceWhitelist: true,
+          whitelist: JSON.parse(document.querySelector("#whiteList").textContent),
           dropdown: {
             enabled: 1, // suggest tags after a single character input
-          } // map tags
+          },
+          backspace: false
         });
 
     tagify.on('add', onAdd);
@@ -74,7 +68,7 @@
     tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
   });
 
-  function tagRequest(method, tagTitle) {
+  function zoneRequest(method, zoneName) {
     // @formatter:off
     $.ajax({
       dataType: 'json',
@@ -84,8 +78,8 @@
       },
       contentType: 'application/json; charset=utf-8',
       method: method,
-      url: '/settings/tags',
-      data: JSON.stringify({'tagTitle': tagTitle})
+      url: '/settings/zones',
+      data: JSON.stringify({'zoneName': zoneName})
     })
     .done(function (data, status) {
       console.log('${data} and status is ${status}');
@@ -94,11 +88,11 @@
   }
 
   function onAdd(e) {
-    tagRequest('POST', e.detail.data.value);
+    zoneRequest('POST', e.detail.data.value);
   }
 
   function onRemove(e) {
-    tagRequest('DELETE', e.detail.data.value);
+    zoneRequest('DELETE', e.detail.data.value);
   }
 </script>
 

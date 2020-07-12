@@ -11,4 +11,12 @@ public class TagFormView {
 
   private String tagTitle;
 
+  private TagFormView(String tagTitle) {
+    this.tagTitle = tagTitle;
+  }
+
+  public static TagFormView of(String tagTitle) {
+    return new TagFormView(tagTitle);
+  }
+
 }

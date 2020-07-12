@@ -7,6 +7,7 @@ import io.devfactory.account.dto.request.SignUpFormRequestView;
 import io.devfactory.account.repository.AccountRepository;
 import io.devfactory.global.config.security.service.UserAccount;
 import io.devfactory.tag.domain.Tag;
+import io.devfactory.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
@@ -121,6 +122,23 @@ public class AccountService {
   public void removeTag(Account account, Tag tag) {
     final Optional<Account> findAccount = accountRepository.findById(account.getId());
     findAccount.ifPresent(a -> a.getTags().remove(tag));
+  }
+
+  public Set<Zone> getZones(Account account) {
+    final Optional<Account> findAccount = accountRepository.findById(account.getId());
+    return findAccount.orElseThrow().getZones();
+  }
+
+  @Transactional
+  public void addZone(Account account, Zone zone) {
+    final Optional<Account> findAccount = accountRepository.findById(account.getId());
+    findAccount.ifPresent(a -> a.getZones().add(zone));
+  }
+
+  @Transactional
+  public void removeZone(Account account, Zone zone) {
+    final Optional<Account> findAccount = accountRepository.findById(account.getId());
+    findAccount.ifPresent(a -> a.getZones().remove(zone));
   }
 
   private Account saveAccount(@Valid SignUpFormRequestView signUpFormRequestView) {
