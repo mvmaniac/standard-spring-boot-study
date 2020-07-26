@@ -16,6 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import io.devfactory.account.domain.Account;
 import io.devfactory.account.repository.AccountRepository;
+import io.devfactory.infra.mail.EmailMessage;
+import io.devfactory.infra.mail.EmailService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ class AccountControllerTest {
   private AccountRepository accountRepository;
 
   @MockBean
-  private JavaMailSender javaMailSender;
+  private EmailService emailService;
 
   @DisplayName("회원 가입 화면 보이는지 테스트")
   @Test
@@ -89,7 +91,7 @@ class AccountControllerTest {
     assertNotEquals(findAccount.getPassword(), password);
 
     assertTrue(accountRepository.existsByEmail(email));
-    then(javaMailSender).should().send(any(SimpleMailMessage.class));
+    then(emailService).should().sendEmail(any(EmailMessage.class));
   }
 
   @DisplayName("인증 메일 확인 - 입력 값 오류")

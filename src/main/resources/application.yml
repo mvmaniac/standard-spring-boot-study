@@ -3,12 +3,7 @@ spring:
     name: study
 
   profiles:
-    active: local
-
-  datasource:
-    initialization-mode: always
-    platform: h2
-    data: classpath:sql/data-${spring.datasource.platform}.sql
+    active: dev
 
   jpa:
     show-sql: false
@@ -36,3 +31,6 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+app:
+  host: http://localhost:8080

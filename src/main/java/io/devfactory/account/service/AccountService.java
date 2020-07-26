@@ -5,13 +5,21 @@ import io.devfactory.account.dto.NotificationFormView;
 import io.devfactory.account.dto.ProfileFormView;
 import io.devfactory.account.dto.request.SignUpFormRequestView;
 import io.devfactory.account.repository.AccountRepository;
+import io.devfactory.global.config.AppProperties;
 import io.devfactory.global.config.security.service.UserAccount;
+import io.devfactory.infra.mail.EmailMessage;
+import io.devfactory.infra.mail.EmailService;
 import io.devfactory.tag.domain.Tag;
 import io.devfactory.zone.domain.Zone;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -19,20 +27,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class AccountService {
 
   private final AccountRepository accountRepository;
-  private final JavaMailSender javaMailSender;
+  private final EmailService emailService;
   private final PasswordEncoder passwordEncoder;
   private final ModelMapper modelMapper;
+  private final TemplateEngine templateEngine;
+  private final AppProperties appProperties;
 
   @Transactional
   public Account processSaveAccount(SignUpFormRequestView signUpFormRequestView) {
@@ -43,13 +52,20 @@ public class AccountService {
   }
 
   public void sendSignUpConfirmEmail(Account savedAccount) {
-    final SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-    simpleMailMessage.setTo(savedAccount.getEmail());
-    simpleMailMessage.setSubject("스터디올래, 회원 가입 인증");
-    simpleMailMessage.setText("/check-email-token?token=" + savedAccount.getEmailCheckToken() +
+    final Context context = new Context();
+    context.setVariable("link", "/check-email-token?token=" + savedAccount.getEmailCheckToken() +
         "&email=" + savedAccount.getEmail());
+    context.setVariable("nickname", savedAccount.getNickname());
+    context.setVariable("linkName", "이메일 인증하기");
+    context.setVariable("message", "스터디올래 서비스를 사용하려면 링크를 클릭하세요.");
+    context.setVariable("host", appProperties.getHost());
 
-    javaMailSender.send(simpleMailMessage);
+    final String message = templateEngine.process("views/mail/simple-link", context);
+
+    final EmailMessage emailMessage = EmailMessage.of(savedAccount.getEmail(),
+        "스터디올래, 회원 가입 인증", message);
+
+    emailService.sendEmail(emailMessage);
   }
 
   @Transactional
@@ -97,14 +113,18 @@ public class AccountService {
   public void sendLoginLink(Account account) {
     account.generateEmailCheckToken();
 
-    SimpleMailMessage mailMessage = new SimpleMailMessage();
-
-    mailMessage.setTo(account.getEmail());
-    mailMessage.setSubject("스터디올래, 로그인 링크");
-    mailMessage.setText("/login-by-email?token=" + account.getEmailCheckToken() +
+    final Context context = new Context();
+    context.setVariable("link", "/login-by-email?token=" + account.getEmailCheckToken() +
         "&email=" + account.getEmail());
+    context.setVariable("nickname", account.getNickname());
+    context.setVariable("linkName", "이메일 인증하기");
+    context.setVariable("message", "로그인 하려면 아래 링크를 클릭하세요.");
+    context.setVariable("host", appProperties.getHost());
 
-    javaMailSender.send(mailMessage);
+    final String message = templateEngine.process("views/mail/simple-link", context);
+    final EmailMessage emailMessage = EmailMessage.of(account.getEmail(), "스터디올래, 로그인 링크", message);
+
+    emailService.sendEmail(emailMessage);
   }
 
   public Set<Tag> getTags(Account account) {
