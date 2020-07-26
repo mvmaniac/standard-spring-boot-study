@@ -96,11 +96,7 @@ public class AccountController {
 
   @GetMapping("/profile/{nickname}")
   public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account) {
-    final Account findAccount = accountRepository.findByNickname(nickname);
-
-    if (Objects.isNull(nickname)) {
-      throw new IllegalArgumentException(nickname +"에 해당하는 사용자가 없습니다.");
-    }
+    final Account findAccount = accountService.getAccount(nickname);
 
     model.addAttribute(findAccount); // 해당하는 타입의 케멀케이스로 들어감 (Account 타입으로 account 라는 이름으로 들어감)
     model.addAttribute("isOwner", findAccount.equals(account));
@@ -130,7 +126,7 @@ public class AccountController {
 
     accountService.sendLoginLink(findAccount);
     attributes.addFlashAttribute("message", "이메일 인증 메일을 발송 했습니다.");
-    return REDIRECT.apply("email-login");
+    return REDIRECT.apply("/email-login");
   }
 
   @GetMapping("/login-by-email")

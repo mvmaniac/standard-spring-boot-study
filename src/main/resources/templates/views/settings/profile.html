@@ -12,16 +12,11 @@
 <main th:ref="main">
   <div class="d-flex mt-5 justify-content-center">
     <div class="col-2"
-         th:insert="~{layouts/fragments/settingsMenu :: settings-menu(currentMenu='profile')}">
+         th:insert="~{layouts/fragments/settings :: settings-menu(currentMenu='profile')}">
     </div>
 
     <div class="col-8">
-      <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
-        <span th:text="${message}">메시지</span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+      <div th:replace="~{layouts/fragments/common :: message}"></div>
 
       <div class="row">
         <h2 class="col-sm-12" th:text="${account.nickname}"></h2>

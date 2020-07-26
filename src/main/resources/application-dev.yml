@@ -1,6 +1,6 @@
 spring:
   datasource:
-    initialization-mode: always
+    initialization-mode: never
     platform: postgres
     data: classpath:sql/data-${spring.datasource.platform}.sql
 

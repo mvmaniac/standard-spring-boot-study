@@ -12,6 +12,7 @@ import io.devfactory.infra.mail.EmailService;
 import io.devfactory.tag.domain.Tag;
 import io.devfactory.zone.domain.Zone;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import javax.validation.Valid;
@@ -42,6 +43,16 @@ public class AccountService {
   private final ModelMapper modelMapper;
   private final TemplateEngine templateEngine;
   private final AppProperties appProperties;
+
+  public Account getAccount(String nickname) {
+    final Account findAccount = accountRepository.findByNickname(nickname);
+
+    if (Objects.isNull(nickname)) {
+      throw new IllegalArgumentException(nickname +"에 해당하는 사용자가 없습니다.");
+    }
+
+    return findAccount;
+  }
 
   @Transactional
   public Account processSaveAccount(SignUpFormRequestView signUpFormRequestView) {

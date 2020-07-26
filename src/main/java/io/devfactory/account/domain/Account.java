@@ -19,6 +19,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import io.devfactory.account.dto.NotificationFormView;
 import io.devfactory.account.dto.ProfileFormView;
+import io.devfactory.study.domain.Study;
 import io.devfactory.tag.domain.Tag;
 import io.devfactory.zone.domain.Zone;
 import lombok.Builder;
@@ -164,6 +165,10 @@ public class Account {
 
   public void updateNickname(String nickname) {
     this.nickname = nickname;
+  }
+
+  public boolean isManagerOf(Study study) {
+    return study.getManagers().contains(this);
   }
 
 }

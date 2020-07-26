@@ -97,7 +97,7 @@ public class SettingsController {
     accountService.updateProfile(account, view);
 
     attributes.addFlashAttribute("message", "프로필을 수정 했습니다.");
-    return REDIRECT.apply(SETTINGS + PROFILE);
+    return REDIRECT.apply("/" + SETTINGS + PROFILE);
   }
 
   @GetMapping(PASSWORD)
@@ -119,7 +119,7 @@ public class SettingsController {
     accountService.updatePassword(account, view.getNewPassword());
 
     attributes.addFlashAttribute("message", "패스워드를 변경했습니다.");
-    return REDIRECT.apply(SETTINGS + PASSWORD);
+    return REDIRECT.apply("/" + SETTINGS + PASSWORD);
   }
 
   @GetMapping(NOTIFICATIONS)
@@ -141,7 +141,7 @@ public class SettingsController {
     accountService.updateNotification(account, view);
 
     attributes.addFlashAttribute("message", "알림 설정을 변경했습니다.");
-    return REDIRECT.apply(SETTINGS + NOTIFICATIONS);
+    return REDIRECT.apply("/" + SETTINGS + NOTIFICATIONS);
   }
 
   @GetMapping(ACCOUNT)
@@ -161,11 +161,12 @@ public class SettingsController {
 
     accountService.updateNickname(account, view.getNickname());
     attributes.addFlashAttribute("message", "닉네임을 수정했습니다.");
-    return REDIRECT.apply(SETTINGS + ACCOUNT);
+    return REDIRECT.apply("/" + SETTINGS + ACCOUNT);
   }
 
   @GetMapping(TAGS)
-  public String viewTagForm(@CurrentUser Account account, Model model) throws JsonProcessingException {
+  public String viewTagForm(@CurrentUser Account account, Model model)
+      throws JsonProcessingException {
     model.addAttribute(account);
 
     final Set<Tag> tags = accountService.getTags(account);
@@ -185,7 +186,8 @@ public class SettingsController {
   }
 
   @PostMapping(TAGS)
-  public ResponseEntity<String> createTag(@CurrentUser Account account, @RequestBody TagFormView view) {
+  public ResponseEntity<String> createTag(@CurrentUser Account account,
+      @RequestBody TagFormView view) {
     String title = view.getTagTitle();
 
     Tag tag = tagRepository.findByTitle(title);
@@ -199,7 +201,8 @@ public class SettingsController {
   }
 
   @DeleteMapping(TAGS)
-  public ResponseEntity<String> removeTag(@CurrentUser Account account, @RequestBody TagFormView view) {
+  public ResponseEntity<String> removeTag(@CurrentUser Account account,
+      @RequestBody TagFormView view) {
     String title = view.getTagTitle();
 
     Tag tag = tagRepository.findByTitle(title);
@@ -213,7 +216,8 @@ public class SettingsController {
   }
 
   @GetMapping(ZONES)
-  public String viewZoneForm(@CurrentUser Account account, Model model) throws JsonProcessingException {
+  public String viewZoneForm(@CurrentUser Account account, Model model)
+      throws JsonProcessingException {
     model.addAttribute(account);
 
     final Set<Zone> zones = accountService.getZones(account);
@@ -233,7 +237,8 @@ public class SettingsController {
   }
 
   @PostMapping(ZONES)
-  public ResponseEntity<String> createZone(@CurrentUser Account account, @RequestBody ZoneFormView view) {
+  public ResponseEntity<String> createZone(@CurrentUser Account account,
+      @RequestBody ZoneFormView view) {
     final Zone zone = zoneRepository
         .findByCityAndProvince(view.getCityName(), view.getProvinceName());
 
@@ -246,7 +251,8 @@ public class SettingsController {
   }
 
   @DeleteMapping(ZONES)
-  public ResponseEntity<String> removeZone(@CurrentUser Account account, @RequestBody ZoneFormView view) {
+  public ResponseEntity<String> removeZone(@CurrentUser Account account,
+      @RequestBody ZoneFormView view) {
     final Zone zone = zoneRepository
         .findByCityAndProvince(view.getCityName(), view.getProvinceName());
 
