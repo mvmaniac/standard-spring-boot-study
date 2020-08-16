@@ -8,4 +8,110 @@
   </button>
 </div>
 
+<div th:fragment="update-tags (baseUrl)">
+  <script th:src="@{/node_modules/{yaireo}/tagify/dist/tagify.min.js(yaireo='@yaireo')}"></script>
+  <script type="application/javascript" th:inline="javascript">
+    $(function() {
+      var tagInput = document.querySelector('#tags'),
+          tagify = new Tagify(tagInput, {
+            pattern: /^.{0,20}$/,
+            whitelist: JSON.parse(document.querySelector("#whiteList").textContent),
+            dropdown: {
+              enabled: 1, // suggest tags after a single character input
+            },
+            backspace: false
+          });
+
+      tagify.on('add', onAdd);
+      tagify.on('remove', onRemove);
+
+      // add a class to Tagify's input element
+      tagify.DOM.input.classList.add('form-control');
+
+      // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+      tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+    });
+
+    function tagRequest(method, tagTitle) {
+      // @formatter:off
+      $.ajax({
+        dataType: 'json',
+        autocomplete: {
+          enabled: true,
+          rightKey: true,
+        },
+        contentType: 'application/json; charset=utf-8',
+        method: method,
+        url: '[(${baseUrl})]',
+        data: JSON.stringify({'tagTitle': tagTitle})
+      })
+          .done(function (data, status) {
+            console.log('${data} and status is ${status}');
+          });
+      // @formatter:on
+    }
+
+    function onAdd(e) {
+      tagRequest('POST', e.detail.data.value);
+    }
+
+    function onRemove(e) {
+      tagRequest('DELETE', e.detail.data.value);
+    }
+  </script>
+</div>
+
+<div th:fragment="update-zones (baseUrl)">
+  <script th:src="@{/node_modules/{yaireo}/tagify/dist/tagify.min.js(yaireo='@yaireo')}"></script>
+  <script type="application/javascript">
+    $(function () {
+      var tagInput = document.querySelector('#zones'),
+          tagify = new Tagify(tagInput, {
+            enforceWhitelist: true,
+            whitelist: JSON.parse(document.querySelector("#whiteList").textContent),
+            dropdown: {
+              enabled: 1, // suggest tags after a single character input
+            },
+            backspace: false
+          });
+
+      tagify.on('add', onAdd);
+      tagify.on('remove', onRemove);
+
+      // add a class to Tagify's input element
+      tagify.DOM.input.classList.add('form-control');
+
+      // re-place Tagify's input element outside of the  element (tagify.DOM.scope), just before it
+      tagify.DOM.scope.parentNode.insertBefore(tagify.DOM.input, tagify.DOM.scope);
+    });
+
+    function zoneRequest(method, zoneName) {
+      // @formatter:off
+      $.ajax({
+        dataType: 'json',
+        autocomplete: {
+          enabled: true,
+          rightKey: true,
+        },
+        contentType: 'application/json; charset=utf-8',
+        method: method,
+        url: '[(${baseUrl})]',
+        data: JSON.stringify({'zoneName': zoneName})
+      })
+          .done(function (data, status) {
+            console.log('${data} and status is ${status}');
+          });
+      // @formatter:on
+    }
+
+    function onAdd(e) {
+      zoneRequest('POST', e.detail.data.value);
+    }
+
+    function onRemove(e) {
+      zoneRequest('DELETE', e.detail.data.value);
+    }
+  </script>
+</div>
+
 </html>

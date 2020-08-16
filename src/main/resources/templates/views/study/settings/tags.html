@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:insert="~{layouts/layoutDefault :: default(~{::main}, _, ~{::script}, ~{::style}, ~{::link})}">
+
+<head>
+  <title></title>
+  <link rel="stylesheet"
+        th:href="@{/node_modules/{yaireo}/tagify/dist/tagify.css(yaireo='@yaireo')}">
+
+  <style>
+    .tagify-outside {
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<main th:ref="main">
+  <div th:replace="~{layouts/fragments/study :: study-banner}"></div>
+  <div th:replace="~{layouts/fragments/study :: study-info}"></div>
+  <div th:replace="~{layouts/fragments/study :: study-menu(studyMenu='settings')}"></div>
+
+  <div class="d-flex mt-5 justify-content-center">
+    <div class="col-2"
+         th:insert="~{layouts/fragments/study :: study-settings-menu(currentMenu='tags')}">
+    </div>
+
+    <div class="col-8">
+      <div class="row">
+        <h2 class="col-sm-12">스터디 주제</h2>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="alert alert-info" role="alert">
+            스터디에서 주로 다루는 주제를 태그로 등록하세요. 태그를 입력하고 콤마(,) 또는 엔터를 입력하세요.
+          </div>
+          <div id="whiteList" th:text="${whiteList}" hidden>
+          </div>
+          <input id="tags" type="text" name="tags" th:value="${#strings.listJoin(tags, ',')}"
+                 class="tagify-outside" aria-describedby="tagHelp">
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script th:src="@{/js/common-study.js}"></script>
+<script th:replace="~{layouts/fragments/csrf :: csrf}"></script>
+<script
+    th:replace="~{layouts/fragments/common :: update-tags(baseUrl='/study/' + ${study.path} + '/settings/tags')}"></script>
+
+</body>
+</html>

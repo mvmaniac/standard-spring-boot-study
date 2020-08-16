@@ -145,14 +145,14 @@ public class SettingsController {
   }
 
   @GetMapping(ACCOUNT)
-  public String updateAccountForm(@CurrentUser Account account, Model model) {
+  public String viewAccountForm(@CurrentUser Account account, Model model) {
     model.addAttribute(account);
     model.addAttribute(modelMapper.map(account, NicknameFormView.class));
     return VIEWS + SETTINGS + ACCOUNT;
   }
 
   @PostMapping(ACCOUNT)
-  public String updateAccount(@CurrentUser Account account, @Valid NicknameFormView view,
+  public String modifyAccount(@CurrentUser Account account, @Valid NicknameFormView view,
       Errors errors, Model model, RedirectAttributes attributes) {
     if (errors.hasErrors()) {
       model.addAttribute(account);

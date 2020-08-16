@@ -112,7 +112,7 @@ class StudyControllerTest {
         .build();
 
     Account findAccount = accountRepository.findByNickname("test");
-    studyService.createStudy(study, findAccount);
+    studyService.saveStudy(study, findAccount);
 
     mockMvc.perform(get("/study/test-path"))
         .andExpect(view().name("views/study/view"))

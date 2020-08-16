@@ -11,7 +11,6 @@ import io.devfactory.study.service.StudyService;
 import io.devfactory.study.validator.StudyFormValidator;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -65,13 +64,13 @@ public class StudyController {
   }
 
   @PostMapping("/study")
-  public String saveStudy(@CurrentUser Account account, @Valid StudyFormView view, Errors errors, Model model) {
+  public String createStudy(@CurrentUser Account account, @Valid StudyFormView view, Errors errors, Model model) {
     if (errors.hasErrors()) {
       model.addAttribute(account);
       return "views/study/form";
     }
 
-    final Study savedStudy = studyService.createStudy(modelMapper.map(view, Study.class), account);
+    final Study savedStudy = studyService.saveStudy(modelMapper.map(view, Study.class), account);
     return REDIRECT.apply("/study/" + URLEncoder.encode(savedStudy.getPath(),
         StandardCharsets.UTF_8));
   }

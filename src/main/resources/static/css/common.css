@@ -3,6 +3,20 @@ nav a.navbar-brand img {
   height: 30px;
 }
 
+#study-logo {
+  height: 200px;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+#study-logo img {
+  height: auto;
+  width: 100%;
+  overflow: hidden;
+}
+
 footer img {
   width: 100px;
 }
