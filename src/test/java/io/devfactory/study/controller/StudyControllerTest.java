@@ -1,8 +1,6 @@
 package io.devfactory.study.controller;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,26 +24,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
 class StudyControllerTest {
 
   @Autowired
-  private MockMvc mockMvc;
+  protected MockMvc mockMvc;
 
   @Autowired
-  private StudyService studyService;
+  protected StudyService studyService;
 
   @Autowired
-  private StudyRepository studyRepository;
+  protected StudyRepository studyRepository;
 
   @Autowired
-  private AccountRepository accountRepository;
-
-  @AfterEach
-  void afterEach() {
-    accountRepository.deleteAll();
-  }
+  protected AccountRepository accountRepository;
 
   @Test
   @WithAccount("test")
@@ -58,7 +52,7 @@ class StudyControllerTest {
         .andExpect(model().attributeExists("studyFormView"));
   }
 
-  @Transactional
+
   @Test
   @WithAccount("test")
   @DisplayName("스터디 개설 - 완료")
@@ -78,7 +72,6 @@ class StudyControllerTest {
     assertTrue(study.getManagers().contains(account));
   }
 
-  @Transactional
   @Test
   @WithAccount("test")
   @DisplayName("스터디 개설 - 실패")
@@ -99,7 +92,6 @@ class StudyControllerTest {
     assertNull(study);
   }
 
-  @Transactional
   @Test
   @WithAccount("test")
   @DisplayName("스터디 조회")
@@ -118,6 +110,51 @@ class StudyControllerTest {
         .andExpect(view().name("views/study/view"))
         .andExpect(model().attributeExists("account"))
         .andExpect(model().attributeExists("study"));
+  }
+
+  @Test
+  @WithAccount("test")
+  @DisplayName("스터디 가입")
+  void joinStudy() throws Exception {
+    Account subtest = createAccount("subtest");
+
+    Study study = createStudy("test-study", subtest);
+
+    mockMvc.perform(get("/study/" + study.getPath() + "/join"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(redirectedUrl("/study/" + study.getPath() + "/members"));
+
+    Account findAccount = accountRepository.findByNickname("test");
+    assertTrue(study.getMembers().contains(findAccount));
+  }
+
+  @Test
+  @WithAccount("test")
+  @DisplayName("스터디 탈퇴")
+  void leaveStudy() throws Exception {
+    Account subtest = createAccount("subtest");
+    Study study = createStudy("test-study", subtest);
+
+    Account findAccount = accountRepository.findByNickname("test");
+    studyService.addMember(study, findAccount);
+
+    mockMvc.perform(get("/study/" + study.getPath() + "/leave"))
+        .andExpect(status().is3xxRedirection())
+        .andExpect(redirectedUrl("/study/" + study.getPath() + "/members"));
+
+    assertFalse(study.getMembers().contains(findAccount));
+  }
+
+  protected Study createStudy(String path, Account manager) {
+    Study study = Study.create().path(path).build();
+    studyService.saveStudy(study, manager);
+    return study;
+  }
+
+  protected Account createAccount(String nickname) {
+    Account account = Account.create().nickname(nickname).email(nickname + "@gmail.com").build();
+    accountRepository.save(account);
+    return account;
   }
 
 }

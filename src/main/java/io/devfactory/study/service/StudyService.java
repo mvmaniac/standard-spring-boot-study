@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.Set;
 
+import static io.devfactory.study.dto.StudyFormView.VALID_PATH_PATTERN;
+
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
@@ -122,6 +124,17 @@ public class StudyService {
     study.stopRecruit();
   }
 
+  public boolean isValidPath(String newPath) {
+    if (!newPath.matches(VALID_PATH_PATTERN)) {
+      return false;
+    }
+    return !studyRepository.existsByPath(newPath);
+  }
+
+  public boolean isValidTitle(String newTitle) {
+    return newTitle.length() <= 50;
+  }
+
   private void checkIfManager(Account account, Study study) {
     if (!account.isManagerOf(study)) {
       throw new AccessDeniedException("해당 기능을 사용할 수 없습니다.");
@@ -132,6 +145,35 @@ public class StudyService {
     if (study == null) {
       throw new IllegalArgumentException(path + "에 해당하는 스터디가 없습니다.");
     }
+  }
+
+  @Transactional
+  public void updateStudyPath(Study study, String newPath) {
+    study.changePath(newPath);
+  }
+
+  @Transactional
+  public void updateStudyTitle(Study study, String newTitle) {
+    study.changeTitle(newTitle);
+  }
+
+  @Transactional
+  public void delete(Study study) {
+    if (study.isRemovable()) {
+      studyRepository.delete(study);
+    } else {
+      throw new IllegalArgumentException("스터디를 삭제할 수 없습니다.");
+    }
+  }
+
+  @Transactional
+  public void addMember(Study study, Account account) {
+    study.addMembers(account);
+  }
+
+  @Transactional
+  public void removeMember(Study study, Account account) {
+    study.removeMember(account);
   }
 
 }

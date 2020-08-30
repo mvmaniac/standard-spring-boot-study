@@ -28,7 +28,7 @@
         </div>
 
         <form th:if="${!study.useBanner}" action="#"
-              th:action="@{'/study/' + ${study.getPath()} + '/settings/banner/enable'}"
+              th:action="@{/study/{path}/settings/banner/enable(path=${study.getPath()})}"
               method="post" novalidate>
           <div class="alert alert-primary" role="alert">
             스터디 메뉴에서 스터디 배너 이미지를 사용합니다. 스터디 배너 이미지를 아직 설정하지 않았다면, 기본 배너 이미지를 사용합니다.
@@ -40,7 +40,7 @@
           </div>
         </form>
         <form th:if="${study.useBanner}" action="#"
-              th:action="@{'/study/' + ${study.getPath()} + '/settings/banner/disable'}"
+              th:action="@{/study/{path}/settings/banner/disable(path=${study.getPath()})}"
               method="post" novalidate>
           <div class="alert alert-info" role="alert">
             스터디 메뉴에서 스터디 배너 이미지를 사용하지 않습니다. 스터디 목록에서는 배너 이미지를 사용합니다.
@@ -59,7 +59,7 @@
         </div>
 
         <form id="imageForm" action="#"
-              th:action="@{'/study/' + ${study.getPath()} + '/settings/banner'}" method="post"
+              th:action="@{/study/{path}/settings/banner(path=${study.getPath()})}" method="post"
               novalidate>
           <div class="form-group">
             <input id="studyImage" type="hidden" name="image" class="form-control"/>

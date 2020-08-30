@@ -22,8 +22,8 @@ public class WithAccountSecurityContextFactory implements WithSecurityContextFac
     String nickname = withAccount.value();
 
     final SignUpFormRequestView signUpFormRequestView = SignUpFormRequestView.create()
-        .email("test@gmail.com")
-        .nickname("test")
+        .email(nickname + "@gmail.com")
+        .nickname(nickname)
         .password("12345678")
         .build();
 

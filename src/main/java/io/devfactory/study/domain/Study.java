@@ -7,6 +7,8 @@ import io.devfactory.account.domain.Account;
 import io.devfactory.global.config.security.service.UserAccount;
 import io.devfactory.tag.domain.Tag;
 import io.devfactory.zone.domain.Zone;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +40,8 @@ import lombok.NoArgsConstructor;
     @NamedAttributeNode("managers")})
 @NamedEntityGraph(name = "Study.withManagers", attributeNodes = {
     @NamedAttributeNode("managers")})
+@NamedEntityGraph(name = "Study.withMembers", attributeNodes = {
+    @NamedAttributeNode("members")})
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = PROTECTED)
 @Getter
@@ -91,7 +95,7 @@ public class Study {
   private boolean useBanner;
 
   @Builder(builderMethodName = "create")
-  public Study(String path, String title, String shortDescription, String fullDescription,
+  private Study(String path, String title, String shortDescription, String fullDescription,
       String image, LocalDateTime publishedDateTime, LocalDateTime closedDateTime,
       LocalDateTime recruitingUpdateDateTime, boolean recruiting, boolean published, boolean closed,
       boolean useBanner) {
@@ -111,6 +115,14 @@ public class Study {
 
   public void addManagers(Account account) {
     this.managers.add(account);
+  }
+
+  public void addMembers(Account account) {
+    this.members.add(account);
+  }
+
+  public void removeMember(Account account) {
+    this.members.remove(account);
   }
 
   public boolean isJoinAble(UserAccount userAccount) {
@@ -178,6 +190,23 @@ public class Study {
   public boolean canUpdateRecruiting() {
     return this.published && this.recruitingUpdateDateTime == null || this.recruitingUpdateDateTime
         .isBefore(LocalDateTime.now().minusHours(1));
+  }
+
+  public void changePath(String path) {
+    this.path = path;
+  }
+
+  public void changeTitle(String title) {
+    this.title = title;
+  }
+
+  public boolean isRemovable() {
+    // TODO 모임을 했던 스터디는 삭제할 수 없다.
+    return !this.published;
+  }
+
+  public String getEncodedPath() {
+    return URLEncoder.encode(this.path, StandardCharsets.UTF_8);
   }
 
 }

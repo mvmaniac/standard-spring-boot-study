@@ -24,7 +24,7 @@
       <div th:replace="~{layouts/fragments/common :: message}"></div>
 
       <form class="needs-validation"
-            th:action="@{'/study/' + ${study.getPath()} + '/settings/description'}"
+            th:action="@{/study/{path}/settings/description(path=${study.getPath()})}"
             th:object="${studyDescriptionFormView}" method="post" novalidate>
 
         <div class="form-group">
@@ -45,7 +45,7 @@
         <div class="form-group">
           <label for="fullDescription">상세 소개</label>
           <textarea id="fullDescription" type="textarea" th:field="*{fullDescription}"
-                    class="form-control"
+                    class="editor form-control"
                     placeholder="스터디를 자세히 설명해 주세요." required></textarea>
 
           <small id="fullDescriptionHelp" class="form-text text-muted">

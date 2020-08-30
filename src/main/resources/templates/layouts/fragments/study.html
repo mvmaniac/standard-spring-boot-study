@@ -8,20 +8,20 @@
 
 <div th:fragment="study-menu (studyMenu)" class="row px-3 justify-content-center bg-light">
   <nav class="col-10 nav nav-tabs">
-    <a class="nav-item nav-link" th:href="@{'/study/' + ${study.path}}"
+    <a class="nav-item nav-link" th:href="@{/study/{path}(path=${study.path})}"
        th:classappend="${studyMenu == 'info'}? active">
       <i class="fa fa-info-circle"></i> 소개
     </a>
-    <a class="nav-item nav-link" th:href="@{'/study/' + ${study.path} + '/members'}"
+    <a class="nav-item nav-link" th:href="@{/study/{path}/members(path=${study.path})}"
        th:classappend="${studyMenu == 'members'}? active">
       <i class="fa fa-user"></i> 구성원
     </a>
-    <a class="nav-item nav-link" th:href="@{'/study/' + ${study.path} + '/events'}"
+    <a class="nav-item nav-link" th:href="@{/study/{path}/events(path=${study.path})}"
        th:classappend="${studyMenu == 'events'}? active">
       <i class="fa fa-calendar"></i> 모임
     </a>
     <a sec:authorize="isAuthenticated()"
-       th:href="@{'/study/' + ${study.path} + '/settings/description'}"
+       th:href="@{/study/{path}/settings/description(path=${study.path})}"
        th:classappend="${studyMenu == 'settings'}? active" class="nav-item nav-link"
        th:if="${study.isManager(#authentication.principal)}">
       <i class="fa fa-cog"></i> 설정
@@ -32,25 +32,25 @@
 <div th:fragment="study-settings-menu (currentMenu)" class="list-group">
   <a class="list-group-item list-group-item-action"
      th:classappend="${currentMenu == 'description'}? active"
-     href="#" th:href="@{'/study/' + ${study.path} + '/settings/description'}">소개</a>
+     href="#" th:href="@{/study/{path}/settings/description(path=${study.path})}">소개</a>
   <a class="list-group-item list-group-item-action"
      th:classappend="${currentMenu == 'banner'}? active"
-     href="#" th:href="@{'/study/' + ${study.path} + '/settings/banner'}">배너 이미지</a>
+     href="#" th:href="@{/study/{path}/settings/banner(path=${study.path})}">배너 이미지</a>
   <a class="list-group-item list-group-item-action"
      th:classappend="${currentMenu == 'tags'}? active"
-     href="#" th:href="@{'/study/' + ${study.path} + '/settings/tags'}">스터디 주제</a>
+     href="#" th:href="@{/study/{path}/settings/tags(path=${study.path})}">스터디 주제</a>
   <a class="list-group-item list-group-item-action"
      th:classappend="${currentMenu == 'zones'}? active"
-     href="#" th:href="@{'/study/' + ${study.path} + '/settings/zones'}">활동 지역</a>
+     href="#" th:href="@{/study/{path}/settings/zones(path=${study.path})}">활동 지역</a>
   <a class="list-group-item list-group-item-action list-group-item-danger"
      th:classappend="${currentMenu == 'study'}? active"
-     href="#" th:href="@{'/study/' + ${study.path} + '/settings/study'}">스터디</a>
+     href="#" th:href="@{/study/{path}/settings/study(path=${study.path})}">스터디</a>
 </div>
 
 <div th:fragment="study-info">
   <div class="row pt-4 text-left justify-content-center bg-light">
     <div class="col-6">
-      <a href="#" class="text-decoration-none" th:href="@{'/study/' + ${study.path}}">
+      <a href="#" class="text-decoration-none" th:href="@{/study/{path}(path=${study.path})}">
         <span class="h2" th:text="${study.title}">스터디 이름</span>
       </a>
     </div>
@@ -76,22 +76,22 @@
 
       <span sec:authorize="isAuthenticated()" th:if="${study.isJoinAble(#authentication.principal)}"
             class="btn-group" role="group" aria-label="Basic example">
-        <a class="btn btn-primary" th:href="@{'/study/' + ${study.path} + '/join'}">스터디 가입</a>
-        <a class="btn btn-outline-primary" th:href="@{'/study/' + ${study.path} + '/members'}"
+        <a class="btn btn-primary" th:href="@{/study/{path}/join(path=${study.path})}">스터디 가입</a>
+        <a class="btn btn-outline-primary" th:href="@{/study/{path}/members(path=${study.path})}"
            th:text="${study.members.size()}">1</a>
       </span>
 
       <span sec:authorize="isAuthenticated()"
             th:if="${!study.closed && study.isMember(#authentication.principal)}" class="btn-group">
-        <a class="btn btn-outline-warning" th:href="@{'/study/' + ${study.path} + '/leave'}">
+        <a class="btn btn-outline-warning" th:href="@{/study/{path}/leave(path=${study.path})}">
           스터디 탈퇴</a>
-        <a class="btn btn-outline-primary" th:href="@{'/study/' + ${study.path} + '/members'}"
+        <a class="btn btn-outline-primary" th:href="@{/study/{path}/members(path=${study.path})}"
            th:text="${study.members.size()}">1</a>
       </span>
 
       <span sec:authorize="isAuthenticated()"
             th:if="${study.published && !study.closed && study.isManager(#authentication.principal)}">
-          <a class="btn btn-outline-primary" th:href="@{'/study/' + ${study.path} + '/new-event'}">
+          <a class="btn btn-outline-primary" th:href="@{/study/{path}/event(path=${study.path})}">
             <i class="fa fa-plus"></i> 모임 만들기
           </a>
       </span>
@@ -109,14 +109,14 @@
       <p>
         <span th:each="tag: ${study.tags}"
               class="font-weight-light text-monospace badge badge-pill badge-info mr-3">
-            <a th:href="@{'/search/tag/' + ${tag.title}}" class="text-decoration-none text-white">
+            <a th:href="@{/search/tag/{title}(title=${tag.title})}" class="text-decoration-none text-white">
                 <i class="fa fa-tag"></i> <span th:text="${tag.title}">Tag</span>
             </a>
         </span>
 
         <span th:each="zone: ${study.zones}"
               class="font-weight-light text-monospace badge badge-primary mr-3">
-          <a th:href="@{'/search/zone/' + ${zone.id}}" class="text-decoration-none text-white">
+          <a th:href="@{/search/zone/{id}(id=${zone.id})}" class="text-decoration-none text-white">
             <i class="fa fa-globe"></i>
             <span th:text="${zone.localNameOfCity}">City</span>
           </a>
