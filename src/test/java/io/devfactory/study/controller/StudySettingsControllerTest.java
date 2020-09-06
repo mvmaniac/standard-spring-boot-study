@@ -23,9 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 class StudySettingsControllerTest extends StudyControllerTest {
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 소개 수정 폼 조회 - 실패 (권한 없는 유저)")
+  @Test
   void updateDescriptionForm_fail() throws Exception {
     Account subtest = createAccount("subtest");
     Study study = createStudy("test-study", subtest);
@@ -34,9 +34,9 @@ class StudySettingsControllerTest extends StudyControllerTest {
         .andExpect(status().isForbidden());
   }
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 소개 수정 폼 조회 - 성공")
+  @Test
   void updateDescriptionForm_success() throws Exception {
     Account test = accountRepository.findByNickname("test");
     Study study = createStudy("test-study", test);
@@ -49,9 +49,9 @@ class StudySettingsControllerTest extends StudyControllerTest {
         .andExpect(model().attributeExists("study"));
   }
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 소개 수정 - 성공")
+  @Test
   void updateDescription_success() throws Exception {
     Account test = accountRepository.findByNickname("test");
     Study study = createStudy("test-study", test);
@@ -66,9 +66,9 @@ class StudySettingsControllerTest extends StudyControllerTest {
         .andExpect(flash().attributeExists("message"));
   }
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 소개 수정 - 실패")
+  @Test
   void updateDescription_fail() throws Exception {
     Account test = accountRepository.findByNickname("test");
     Study study = createStudy("test-study", test);

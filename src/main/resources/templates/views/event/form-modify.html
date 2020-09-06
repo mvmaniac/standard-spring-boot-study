@@ -11,7 +11,8 @@
 
 <main th:ref="main">
   <div th:replace="~{layouts/fragments/study :: study-banner}"></div>
-  <div th:replace="~{layouts/fragments/event :: form (mode='new', action='/study/' + ${study.path} + '/events')}"></div>
+  <div th:replace="~{layouts/fragments/event :: form (mode='edit', action='/study/' + ${study.path}
+        + '/events/' + ${event.id})}"></div>
 </main>
 
 <script th:src="@{/node_modules/summernote/dist/summernote-bs4.js}"></script>

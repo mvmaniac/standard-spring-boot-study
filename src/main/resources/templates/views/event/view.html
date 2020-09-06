@@ -52,7 +52,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
             <form
-                th:action="@{/study/{path}/events/{eventId}/leave(path=${study.getPath()},eventId=${event.id})}"
+                th:action="@{/study/{path}/events/{eventId}/disenroll(path=${study.getPath()},eventId=${event.id})}"
                 method="post">
               <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인
               </button>
@@ -136,10 +136,10 @@
               <span th:if="${!enroll.accepted}">대기중</span>
             </td>
             <td th:if="${study.isManager(#authentication.principal)}">
-              <a th:if="${event.isAcceptable(enroll)}" href="#" class="text-decoration-none"
+              <a th:if="${event.canAccept(enroll)}" href="#" class="text-decoration-none"
                  th:href="@{/study/{path}/events/{eventId}/enrollments/{enrollId}/accept(path=${study.getPath()},eventId=${event.id},enrollId=${enroll.id})}">신청
                 수락</a>
-              <a th:if="${event.isRejectable(enroll)}" href="#" class="text-decoration-none"
+              <a th:if="${event.canReject(enroll)}" href="#" class="text-decoration-none"
                  th:href="@{/study/{path}/events/{eventId}/enrollments/{enrollId}/accept(path=${study.getPath()},eventId=${event.id},enrollId=${enroll.id})}">취소</a>
             </td>
             <td th:if="${study.isManager(#authentication.principal)}">
@@ -202,7 +202,7 @@
       </dt>
       <dd th:if="${study.isManager(#authentication.principal)}">
         <a class="btn btn-outline-primary btn-sm my-1"
-           th:href="@{/study/{path}/events/{eventId}/edit(path=${study.path},eventId=${event.id})}">
+           th:href="@{/study/{path}/events/{eventId}/form-modify(path=${study.path},eventId=${event.id})}">
           모임 수정
         </a> <br/>
         <button class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#cancel">
@@ -227,7 +227,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            <form th:action="@{/study/{path}/events/{eventId}/edit(path=${study.path},eventId=${event.id})}"
+            <form th:action="@{/study/{path}/events/{eventId}(path=${study.path},eventId=${event.id})}"
                   th:method="delete">
               <button class="btn btn-primary" type="submit" aria-describedby="submitHelp">확인
               </button>

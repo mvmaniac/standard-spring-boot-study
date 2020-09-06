@@ -1,9 +1,8 @@
 package io.devfactory.event.validator;
 
+import io.devfactory.event.domain.Event;
 import io.devfactory.event.dto.EventFormView;
-import io.devfactory.study.repository.StudyRepository;
 import java.time.LocalDateTime;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -46,6 +45,12 @@ public class EventFormViewValidator implements Validator {
     final LocalDateTime endDateTime = requestView.getEndDateTime();
     return endDateTime.isBefore(requestView.getStartDateTime()) || endDateTime
         .isBefore(requestView.getEndEnrollmentDateTime());
+  }
+
+  public void validateUpdateForm(EventFormView eventForm, Event event, Errors errors) {
+    if (eventForm.getLimitOfEnrollments() < event.getNumberOfAcceptedEnrollments()) {
+      errors.rejectValue("limitOfEnrollments", "wrong.value", "확인된 참기 신청보다 모집 인원 수가 커야 합니다.");
+    }
   }
 
 }

@@ -51,4 +51,8 @@ public class EventFormView {
     this.limitOfEnrollments = limitOfEnrollments;
   }
 
+  public void changeEventType(EventType eventType) {
+    this.eventType = eventType;
+  }
+
 }

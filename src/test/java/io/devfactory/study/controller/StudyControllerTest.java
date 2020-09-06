@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
-class StudyControllerTest {
+public class StudyControllerTest {
 
   @Autowired
   protected MockMvc mockMvc;
@@ -41,9 +41,9 @@ class StudyControllerTest {
   @Autowired
   protected AccountRepository accountRepository;
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 개설 폼 조회")
+  @Test
   void createStudyForm() throws Exception {
     mockMvc.perform(get("/study"))
         .andExpect(status().isOk())
@@ -53,9 +53,9 @@ class StudyControllerTest {
   }
 
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 개설 - 완료")
+  @Test
   void createStudy_success() throws Exception {
     mockMvc.perform(post("/study")
         .param("path", "test-path")
@@ -72,9 +72,9 @@ class StudyControllerTest {
     assertTrue(study.getManagers().contains(account));
   }
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 개설 - 실패")
+  @Test
   void createStudy_fail() throws Exception {
     mockMvc.perform(post("/study")
         .param("path", "wrong path")
@@ -92,9 +92,9 @@ class StudyControllerTest {
     assertNull(study);
   }
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 조회")
+  @Test
   void viewStudy() throws Exception {
     Study study = Study.create()
         .path("test-path")
@@ -112,9 +112,9 @@ class StudyControllerTest {
         .andExpect(model().attributeExists("study"));
   }
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 가입")
+  @Test
   void joinStudy() throws Exception {
     Account subtest = createAccount("subtest");
 
@@ -128,9 +128,9 @@ class StudyControllerTest {
     assertTrue(study.getMembers().contains(findAccount));
   }
 
-  @Test
   @WithAccount("test")
   @DisplayName("스터디 탈퇴")
+  @Test
   void leaveStudy() throws Exception {
     Account subtest = createAccount("subtest");
     Study study = createStudy("test-study", subtest);

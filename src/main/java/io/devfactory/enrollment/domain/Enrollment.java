@@ -53,4 +53,12 @@ public class Enrollment {
     this.attended = attended;
   }
 
+  public void changeEvent(Event event) {
+    this.event = event;
+  }
+
+  public void changeAccepted(boolean accepted) {
+    this.accepted = accepted;
+  }
+
 }
