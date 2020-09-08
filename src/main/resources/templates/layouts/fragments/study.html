@@ -2,11 +2,11 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<div th:fragment="study-banner" th:if="${study.useBanner}" class="row" id="study-logo">
+<div th:fragment="study-banner" th:if="${study.useBanner}" class="d-flex" id="study-logo">
   <img src="" th:src="${study.image}" alt="배너 이미지"/>
 </div>
 
-<div th:fragment="study-menu (studyMenu)" class="row px-3 justify-content-center bg-light">
+<div th:fragment="study-menu (studyMenu)" class="d-flex px-3 justify-content-center bg-light">
   <nav class="col-10 nav nav-tabs">
     <a class="nav-item nav-link" th:href="@{/study/{path}(path=${study.path})}"
        th:classappend="${studyMenu == 'info'}? active">
@@ -48,7 +48,7 @@
 </div>
 
 <div th:fragment="study-info">
-  <div class="row pt-4 text-left justify-content-center bg-light">
+  <div class="d-flex pt-4 text-left justify-content-center bg-light">
     <div class="col-6">
       <a href="#" class="text-decoration-none" th:href="@{/study/{path}(path=${study.path})}">
         <span class="h2" th:text="${study.title}">스터디 이름</span>
@@ -98,13 +98,13 @@
     </div>
   </div>
 
-  <div class="row justify-content-center bg-light">
+  <div class="d-flex justify-content-center bg-light">
     <div class="col-10">
       <p class="lead" th:text="${study.shortDescription}"></p>
     </div>
   </div>
 
-  <div class="row justify-content-center bg-light">
+  <div class="d-flex justify-content-center bg-light">
     <div class="col-10">
       <p>
         <span th:each="tag: ${study.tags}"
@@ -126,7 +126,7 @@
   </div>
 </div>
 
-<div th:fragment="member-list (members, isManager)" class="row px-3 justify-content-center">
+<div th:fragment="member-list (members, isManager)" class="d-flex px-3 justify-content-center">
   <ul class="list-unstyled col-10">
     <li class="media mt-3" th:each="member: ${members}">
       <svg th:if="${#strings.isEmpty(member?.profileImage)}"
