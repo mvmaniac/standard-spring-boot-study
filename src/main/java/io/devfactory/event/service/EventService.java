@@ -63,4 +63,24 @@ public class EventService {
     event.acceptNextWaitingEnrollment();
   }
 
+  @Transactional
+  public void acceptEnrollment(Event event, Enrollment enrollment) {
+    event.accept(enrollment);
+  }
+
+  @Transactional
+  public void rejectEnrollment(Event event, Enrollment enrollment) {
+    event.reject(enrollment);
+  }
+
+  @Transactional
+  public void checkInEnrollment(Enrollment enrollment) {
+    enrollment.changeAttended(true);
+  }
+
+  @Transactional
+  public void cancelCheckInEnrollment(Enrollment enrollment) {
+    enrollment.changeAttended(false);
+  }
+
 }

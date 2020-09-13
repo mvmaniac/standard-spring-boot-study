@@ -140,7 +140,7 @@
                  th:href="@{/study/{path}/events/{eventId}/enrollments/{enrollId}/accept(path=${study.getPath()},eventId=${event.id},enrollId=${enroll.id})}">신청
                 수락</a>
               <a th:if="${event.canReject(enroll)}" href="#" class="text-decoration-none"
-                 th:href="@{/study/{path}/events/{eventId}/enrollments/{enrollId}/accept(path=${study.getPath()},eventId=${event.id},enrollId=${enroll.id})}">취소</a>
+                 th:href="@{/study/{path}/events/{eventId}/enrollments/{enrollId}/reject(path=${study.getPath()},eventId=${event.id},enrollId=${enroll.id})}">취소</a>
             </td>
             <td th:if="${study.isManager(#authentication.principal)}">
               <a th:if="${enroll.accepted && !enroll.attended}" href="#"
