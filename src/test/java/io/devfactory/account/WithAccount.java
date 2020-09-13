@@ -1,4 +1,4 @@
-package io.devfactory;
+package io.devfactory.account;
 
 import org.springframework.security.test.context.support.WithSecurityContext;
 import java.lang.annotation.Retention;

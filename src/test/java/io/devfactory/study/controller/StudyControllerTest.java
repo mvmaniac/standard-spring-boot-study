@@ -9,13 +9,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import io.devfactory.WithAccount;
+import io.devfactory.account.AccountFactory;
+import io.devfactory.account.WithAccount;
 import io.devfactory.account.domain.Account;
 import io.devfactory.account.repository.AccountRepository;
+import io.devfactory.infra.AbstractContainerBaseTest;
+import io.devfactory.infra.MockMvcTest;
+import io.devfactory.study.StudyFactory;
 import io.devfactory.study.domain.Study;
 import io.devfactory.study.repository.StudyRepository;
 import io.devfactory.study.service.StudyService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +27,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@AutoConfigureMockMvc
-@SpringBootTest
-public class StudyControllerTest {
+@MockMvcTest
+class StudyControllerTest extends AbstractContainerBaseTest {
 
   @Autowired
   protected MockMvc mockMvc;
+
+  @Autowired
+  private StudyFactory studyFactory;
+
+  @Autowired
+  private AccountFactory accountFactory;
 
   @Autowired
   protected StudyService studyService;
@@ -116,9 +123,9 @@ public class StudyControllerTest {
   @DisplayName("스터디 가입")
   @Test
   void joinStudy() throws Exception {
-    Account subtest = createAccount("subtest");
+    Account subtest = accountFactory.createAccount("subtest");
 
-    Study study = createStudy("test-study", subtest);
+    Study study = studyFactory.createStudy("test-study", subtest);
 
     mockMvc.perform(get("/study/" + study.getPath() + "/join"))
         .andExpect(status().is3xxRedirection())
@@ -132,8 +139,8 @@ public class StudyControllerTest {
   @DisplayName("스터디 탈퇴")
   @Test
   void leaveStudy() throws Exception {
-    Account subtest = createAccount("subtest");
-    Study study = createStudy("test-study", subtest);
+    Account subtest = accountFactory.createAccount("subtest");
+    Study study = studyFactory.createStudy("test-study", subtest);
 
     Account findAccount = accountRepository.findByNickname("test");
     studyService.addMember(study, findAccount);
@@ -143,18 +150,6 @@ public class StudyControllerTest {
         .andExpect(redirectedUrl("/study/" + study.getPath() + "/members"));
 
     assertFalse(study.getMembers().contains(findAccount));
-  }
-
-  protected Study createStudy(String path, Account manager) {
-    Study study = Study.create().path(path).build();
-    studyService.saveStudy(study, manager);
-    return study;
-  }
-
-  protected Account createAccount(String nickname) {
-    Account account = Account.create().nickname(nickname).email(nickname + "@gmail.com").build();
-    accountRepository.save(account);
-    return account;
   }
 
 }

@@ -24,10 +24,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.devfactory.WithAccount;
+import io.devfactory.account.WithAccount;
 import io.devfactory.account.domain.Account;
 import io.devfactory.account.repository.AccountRepository;
 import io.devfactory.account.service.AccountService;
+import io.devfactory.infra.AbstractContainerBaseTest;
+import io.devfactory.infra.MockMvcTest;
 import io.devfactory.tag.domain.Tag;
 import io.devfactory.tag.dto.TagFormView;
 import io.devfactory.tag.repository.TagRepository;
@@ -46,9 +48,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureMockMvc
-@SpringBootTest
-class SettingsControllerTest {
+@MockMvcTest
+class SettingsControllerTest extends AbstractContainerBaseTest {
 
   @Autowired
   private MockMvc mockMvc;

@@ -167,8 +167,4 @@ public class Account {
     this.nickname = nickname;
   }
 
-  public boolean isManagerOf(Study study) {
-    return study.getManagers().contains(this);
-  }
-
 }

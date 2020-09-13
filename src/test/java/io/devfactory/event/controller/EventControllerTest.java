@@ -1,26 +1,42 @@
 package io.devfactory.event.controller;
 
-import io.devfactory.WithAccount;
-import io.devfactory.account.domain.Account;
-import io.devfactory.enrollment.repository.EnrollmentRepository;
-import io.devfactory.event.domain.Event;
-import io.devfactory.event.domain.EventType;
-import io.devfactory.event.service.EventService;
-import io.devfactory.study.controller.StudyControllerTest;
-import io.devfactory.study.domain.Study;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class EventControllerTest extends StudyControllerTest {
+import io.devfactory.account.AccountFactory;
+import io.devfactory.account.WithAccount;
+import io.devfactory.account.domain.Account;
+import io.devfactory.account.repository.AccountRepository;
+import io.devfactory.enrollment.repository.EnrollmentRepository;
+import io.devfactory.event.domain.Event;
+import io.devfactory.event.domain.EventType;
+import io.devfactory.event.service.EventService;
+import io.devfactory.infra.AbstractContainerBaseTest;
+import io.devfactory.infra.MockMvcTest;
+import io.devfactory.study.StudyFactory;
+import io.devfactory.study.domain.Study;
+import java.time.LocalDateTime;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
+
+@MockMvcTest
+class EventControllerTest extends AbstractContainerBaseTest {
+
+  @Autowired
+  private MockMvc mockMvc;
+
+  @Autowired
+  private StudyFactory studyFactory;
+
+  @Autowired
+  private AccountFactory accountFactory;
 
   @Autowired
   private EventService eventService;
@@ -28,12 +44,15 @@ class EventControllerTest extends StudyControllerTest {
   @Autowired
   private EnrollmentRepository enrollmentRepository;
 
+  @Autowired
+  private AccountRepository accountRepository;
+
   @WithAccount("subtest")
   @DisplayName("선착순 모임에 참가 신청 - 자동 수락")
   @Test
   void newEnrollment_to_FCFS_event_accepted() throws Exception {
-    Account test = createAccount("test");
-    Study study = createStudy("test-study", test);
+    Account test = accountFactory.createAccount("test");
+    Study study = studyFactory.createStudy("test-study", test);
     Event event = createEvent("test-event", EventType.FCFS, 2, study, test);
 
     mockMvc.perform(post("/study/" + study.getPath() + "/events/" + event.getId() + "/enroll")
@@ -49,12 +68,12 @@ class EventControllerTest extends StudyControllerTest {
   @DisplayName("선착순 모임에 참가 신청 - 대기중 (이미 인원이 꽉차서)")
   @Test
   void newEnrollment_to_FCFS_event_not_accepted() throws Exception {
-    Account test = createAccount("test");
-    Study study = createStudy("test-study", test);
+    Account test = accountFactory.createAccount("test");
+    Study study = studyFactory.createStudy("test-study", test);
     Event event = createEvent("test-event", EventType.FCFS, 2, study, test);
 
-    Account may = createAccount("may");
-    Account june = createAccount("june");
+    Account may = accountFactory.createAccount("may");
+    Account june = accountFactory.createAccount("june");
     eventService.newEnrollment(event, may);
     eventService.newEnrollment(event, june);
 
@@ -72,9 +91,9 @@ class EventControllerTest extends StudyControllerTest {
   @Test
   void accepted_account_cancelEnrollment_to_FCFS_event_not_accepted() throws Exception {
     Account subtest = accountRepository.findByNickname("subtest");
-    Account test = createAccount("test");
-    Account may = createAccount("may");
-    Study study = createStudy("test-study", test);
+    Account test = accountFactory.createAccount("test");
+    Account may = accountFactory.createAccount("may");
+    Study study = studyFactory.createStudy("test-study", test);
     Event event = createEvent("test-event", EventType.FCFS, 2, study, test);
 
     eventService.newEnrollment(event, may);
@@ -100,9 +119,9 @@ class EventControllerTest extends StudyControllerTest {
   @WithAccount("subtest")
   void not_accepterd_account_cancelEnrollment_to_FCFS_event_not_accepted() throws Exception {
     Account subtest = accountRepository.findByNickname("subtest");
-    Account test = createAccount("test");
-    Account may = createAccount("may");
-    Study study = createStudy("test-study", test);
+    Account test = accountFactory.createAccount("test");
+    Account may = accountFactory.createAccount("may");
+    Study study = studyFactory.createStudy("test-study", test);
     Event event = createEvent("test-event", EventType.FCFS, 2, study, test);
 
     eventService.newEnrollment(event, may);
@@ -135,8 +154,8 @@ class EventControllerTest extends StudyControllerTest {
   @DisplayName("관리자 확인 모임에 참가 신청 - 대기중")
   @WithAccount("subtest")
   void newEnrollment_to_CONFIMATIVE_event_not_accepted() throws Exception {
-    Account test = createAccount("test");
-    Study study = createStudy("test-study", test);
+    Account test = accountFactory.createAccount("test");
+    Study study = studyFactory.createStudy("test-study", test);
     Event event = createEvent("test-event", EventType.CONFIRMATIVE, 2, study, test);
 
     mockMvc.perform(post("/study/" + study.getPath() + "/events/" + event.getId() + "/enroll")
@@ -148,7 +167,8 @@ class EventControllerTest extends StudyControllerTest {
     isNotAccepted(subtest, event);
   }
 
-  private Event createEvent(String eventTitle, EventType eventType, int limit, Study study, Account account) {
+  private Event createEvent(String eventTitle, EventType eventType, int limit, Study study,
+      Account account) {
     Event event = Event.create()
         .eventType(eventType)
         .limitOfEnrollments(limit)

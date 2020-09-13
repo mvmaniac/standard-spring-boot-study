@@ -1,4 +1,4 @@
-package io.devfactory;
+package io.devfactory.account;
 
 import io.devfactory.account.dto.request.SignUpFormRequestView;
 import io.devfactory.account.service.AccountService;

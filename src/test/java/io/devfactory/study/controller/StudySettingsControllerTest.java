@@ -9,26 +9,47 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import io.devfactory.WithAccount;
+import io.devfactory.account.AccountFactory;
+import io.devfactory.account.WithAccount;
 import io.devfactory.account.domain.Account;
+import io.devfactory.account.repository.AccountRepository;
+import io.devfactory.infra.AbstractContainerBaseTest;
+import io.devfactory.infra.MockMvcTest;
+import io.devfactory.study.StudyFactory;
 import io.devfactory.study.domain.Study;
+import io.devfactory.study.repository.StudyRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@AutoConfigureMockMvc
-@SpringBootTest
-class StudySettingsControllerTest extends StudyControllerTest {
+@MockMvcTest
+class StudySettingsControllerTest extends AbstractContainerBaseTest {
+
+  @Autowired
+  protected MockMvc mockMvc;
+
+  @Autowired
+  private StudyFactory studyFactory;
+
+  @Autowired
+  private AccountFactory accountFactory;
+
+  @Autowired
+  private AccountRepository accountRepository;
+
+  @Autowired
+  private StudyRepository studyRepository;
 
   @WithAccount("test")
   @DisplayName("스터디 소개 수정 폼 조회 - 실패 (권한 없는 유저)")
   @Test
   void updateDescriptionForm_fail() throws Exception {
-    Account subtest = createAccount("subtest");
-    Study study = createStudy("test-study", subtest);
+    Account subtest = accountFactory.createAccount("subtest");
+    Study study = studyFactory.createStudy("test-study", subtest);
 
     mockMvc.perform(get("/study/" + study.getPath() + "/settings/description"))
         .andExpect(status().isForbidden());
@@ -39,7 +60,7 @@ class StudySettingsControllerTest extends StudyControllerTest {
   @Test
   void updateDescriptionForm_success() throws Exception {
     Account test = accountRepository.findByNickname("test");
-    Study study = createStudy("test-study", test);
+    Study study = studyFactory.createStudy("test-study", test);
 
     mockMvc.perform(get("/study/" + study.getPath() + "/settings/description"))
         .andExpect(status().isOk())
@@ -54,7 +75,7 @@ class StudySettingsControllerTest extends StudyControllerTest {
   @Test
   void updateDescription_success() throws Exception {
     Account test = accountRepository.findByNickname("test");
-    Study study = createStudy("test-study", test);
+    Study study = studyFactory.createStudy("test-study", test);
 
     String settingsDescriptionUrl = "/study/" + study.getPath() + "/settings/description";
     mockMvc.perform(post(settingsDescriptionUrl)
@@ -71,7 +92,7 @@ class StudySettingsControllerTest extends StudyControllerTest {
   @Test
   void updateDescription_fail() throws Exception {
     Account test = accountRepository.findByNickname("test");
-    Study study = createStudy("test-study", test);
+    Study study = studyFactory.createStudy("test-study", test);
 
     String settingsDescriptionUrl = "/study/" + study.getPath() + "/settings/description";
     mockMvc.perform(post(settingsDescriptionUrl)

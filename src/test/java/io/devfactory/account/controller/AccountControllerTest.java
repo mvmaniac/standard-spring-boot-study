@@ -16,6 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import io.devfactory.account.domain.Account;
 import io.devfactory.account.repository.AccountRepository;
+import io.devfactory.infra.AbstractContainerBaseTest;
+import io.devfactory.infra.MockMvcTest;
 import io.devfactory.infra.mail.EmailMessage;
 import io.devfactory.infra.mail.EmailService;
 import org.junit.jupiter.api.DisplayName;
@@ -29,9 +31,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureMockMvc
-@SpringBootTest
-class AccountControllerTest {
+@MockMvcTest
+class AccountControllerTest extends AbstractContainerBaseTest {
 
   @Autowired
   private MockMvc mockMvc;

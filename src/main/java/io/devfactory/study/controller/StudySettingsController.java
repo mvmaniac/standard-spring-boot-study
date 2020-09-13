@@ -78,7 +78,7 @@ public class StudySettingsController {
 
     studyService.updateStudyDescription(findStudy, studyDescriptionForm);
     attributes.addFlashAttribute("message", "스터디 소개를 수정했습니다.");
-    return REDIRECT.apply("/find/" + findStudy.getEncodedPath() + "/settings/description");
+    return REDIRECT.apply("/study/" + findStudy.getEncodedPath() + "/settings/description");
   }
 
   @GetMapping("/banner")
