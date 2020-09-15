@@ -1,6 +1,6 @@
 # Standard Spring Boot Study
 
-### 1. 스프링과 JPA 기반 웹 애플리케이션 개발 강의 실습 예제 기반
+### 1. 강의 실습 예제 기반
 
 * [스프링과 JPA 기반 웹 애플리케이션 개발](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81-JPA-%EC%9B%B9%EC%95%B1# "스프링과 JPA 기반 웹 애플리케이션 개발") 참고
 
