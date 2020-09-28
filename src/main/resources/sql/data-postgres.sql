@@ -13,7 +13,7 @@ INSERT INTO tb_account (
     , study_updated_by_email
 ) VALUES (
     nextval('hibernate_sequence')
-    , 'dev@gmail.com'
+    , 'mvmaniaz@gmail.com'
     , 'dev'
     , '{bcrypt}$2a$10$lVaCkvmGOIvljR8XokISE.9WNLVNG902yVNPkoAYEmNqPjDiPpVt.'
     , false

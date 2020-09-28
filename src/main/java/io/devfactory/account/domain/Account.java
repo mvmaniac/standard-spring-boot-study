@@ -86,7 +86,7 @@ public class Account {
   private Set<Zone> zones = new HashSet<>();
 
   @Builder(builderMethodName = "create")
-  public Account(String email, String nickname, String password, boolean emailVerified,
+  private Account(String email, String nickname, String password, boolean emailVerified,
       String emailCheckToken, LocalDateTime emailCheckTokenGeneratedAt, LocalDateTime joinedAt,
       String bio, String url, String occupation, String location, String profileImage,
       boolean studyCreatedByWeb, boolean studyCreatedByEmail, boolean studyEnrollmentResultByWeb,

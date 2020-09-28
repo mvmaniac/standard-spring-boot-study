@@ -1,20 +1,20 @@
 package io.devfactory.study.service;
 
+import static io.devfactory.study.dto.StudyFormView.VALID_PATH_PATTERN;
+
 import io.devfactory.account.domain.Account;
 import io.devfactory.study.domain.Study;
 import io.devfactory.study.dto.StudyDescriptionFormView;
+import io.devfactory.study.event.StudyCreatedEvent;
 import io.devfactory.study.repository.StudyRepository;
 import io.devfactory.tag.domain.Tag;
 import io.devfactory.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
-import java.util.Set;
-
-import static io.devfactory.study.dto.StudyFormView.VALID_PATH_PATTERN;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -23,6 +23,8 @@ public class StudyService {
 
   private final StudyRepository studyRepository;
   private final ModelMapper modelMapper;
+
+  private final ApplicationEventPublisher eventPublisher;
 
   @Transactional
   public Study saveStudy(Study study, Account account) {
@@ -107,6 +109,11 @@ public class StudyService {
   @Transactional
   public void publish(Study study) {
     study.publish();
+
+    // 공개인 경우에만 알림을 보낸다
+    if (study.isPublished()) {
+      eventPublisher.publishEvent(new StudyCreatedEvent(study));
+    }
   }
 
   @Transactional
