@@ -1,6 +1,9 @@
 package io.devfactory.study.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -13,7 +16,6 @@ import io.devfactory.account.AccountFactory;
 import io.devfactory.account.WithAccount;
 import io.devfactory.account.domain.Account;
 import io.devfactory.account.repository.AccountRepository;
-import io.devfactory.infra.AbstractContainerBaseTest;
 import io.devfactory.infra.MockMvcTest;
 import io.devfactory.study.StudyFactory;
 import io.devfactory.study.domain.Study;
@@ -22,13 +24,10 @@ import io.devfactory.study.service.StudyService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 @MockMvcTest
-class StudyControllerTest extends AbstractContainerBaseTest {
+class StudyControllerTest {
 
   @Autowired
   protected MockMvc mockMvc;

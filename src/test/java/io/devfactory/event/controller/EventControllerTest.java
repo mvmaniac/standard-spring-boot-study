@@ -16,7 +16,6 @@ import io.devfactory.enrollment.repository.EnrollmentRepository;
 import io.devfactory.event.domain.Event;
 import io.devfactory.event.domain.EventType;
 import io.devfactory.event.service.EventService;
-import io.devfactory.infra.AbstractContainerBaseTest;
 import io.devfactory.infra.MockMvcTest;
 import io.devfactory.study.StudyFactory;
 import io.devfactory.study.domain.Study;
@@ -27,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
 @MockMvcTest
-class EventControllerTest extends AbstractContainerBaseTest {
+class EventControllerTest {
 
   @Autowired
   private MockMvc mockMvc;

@@ -28,7 +28,6 @@ import io.devfactory.account.WithAccount;
 import io.devfactory.account.domain.Account;
 import io.devfactory.account.repository.AccountRepository;
 import io.devfactory.account.service.AccountService;
-import io.devfactory.infra.AbstractContainerBaseTest;
 import io.devfactory.infra.MockMvcTest;
 import io.devfactory.tag.domain.Tag;
 import io.devfactory.tag.dto.TagFormView;
@@ -41,15 +40,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 @MockMvcTest
-class SettingsControllerTest extends AbstractContainerBaseTest {
+class SettingsControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -83,7 +80,7 @@ class SettingsControllerTest extends AbstractContainerBaseTest {
   @AfterEach
   void afterEach() {
     accountRepository.deleteAll();
-    zoneRepository.deleteAll();;
+    zoneRepository.deleteAll();
   }
 
   @WithAccount("test")

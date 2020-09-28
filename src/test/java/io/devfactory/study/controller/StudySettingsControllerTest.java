@@ -13,21 +13,16 @@ import io.devfactory.account.AccountFactory;
 import io.devfactory.account.WithAccount;
 import io.devfactory.account.domain.Account;
 import io.devfactory.account.repository.AccountRepository;
-import io.devfactory.infra.AbstractContainerBaseTest;
 import io.devfactory.infra.MockMvcTest;
 import io.devfactory.study.StudyFactory;
 import io.devfactory.study.domain.Study;
-import io.devfactory.study.repository.StudyRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 
 @MockMvcTest
-class StudySettingsControllerTest extends AbstractContainerBaseTest {
+class StudySettingsControllerTest {
 
   @Autowired
   protected MockMvc mockMvc;
@@ -40,9 +35,6 @@ class StudySettingsControllerTest extends AbstractContainerBaseTest {
 
   @Autowired
   private AccountRepository accountRepository;
-
-  @Autowired
-  private StudyRepository studyRepository;
 
   @WithAccount("test")
   @DisplayName("스터디 소개 수정 폼 조회 - 실패 (권한 없는 유저)")
