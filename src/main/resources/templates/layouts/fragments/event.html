@@ -9,7 +9,7 @@
       <span th:if="${mode == 'new'}">새 모임 만들기</span>
     </h2>
   </div>
-  <div class="row justify-content-center">
+  <div class="d-flex justify-content-center">
     <form class="needs-validation col-sm-10"
           th:action="@{${action}}"
           th:object="${eventFormView}" method="post" novalidate>

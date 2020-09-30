@@ -45,9 +45,11 @@ public class EventService {
 
   @Transactional
   public void deleteEvent(Event event) {
+    enrollmentRepository.deleteByEvent(event);
     eventRepository.delete(event);
-//    eventPublisher.publishEvent(new StudyUpdateEvent(event.getStudy(),
-//        "'" + event.getTitle() + "' 모임을 취소했습니다."));
+
+    eventPublisher.publishEvent(new StudyUpdateEvent(event.getStudy(),
+        "'" + event.getTitle() + "' 모임을 취소했습니다."));
   }
 
   @Transactional

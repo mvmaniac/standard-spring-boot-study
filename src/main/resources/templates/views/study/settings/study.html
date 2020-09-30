@@ -24,10 +24,10 @@
       <div th:replace="~{layouts/fragments/common :: message}"></div>
 
       <div>
-        <h5 class="col-sm-12" th:unless="${study.published}">스터디 공개 및 종료</h5>
-        <h5 class="col-sm-12" th:if="${study.published}">스터디 비공개 및 종료</h5>
+        <h5 class="col-sm-12 p-0" th:unless="${study.published}">스터디 공개 및 종료</h5>
+        <h5 class="col-sm-12 p-0" th:if="${study.published}">스터디 비공개 및 종료</h5>
 
-        <form th:if="${!study.published && !study.closed}" class="col-sm-12" action="#"
+        <form th:if="${!study.published && !study.closed}" class="col-sm-12 p-0" action="#"
               th:action="@{/study/{path}/settings/study/publish(path=${study.getPath()})}"
               method="post" novalidate>
           <div class="alert alert-info" role="alert">
@@ -42,7 +42,7 @@
           </div>
         </form>
 
-        <form th:if="${study.published && !study.closed}" class="col-sm-12" action="#"
+        <form th:if="${study.published && !study.closed}" class="col-sm-12 p-0" action="#"
               th:action="@{/study/{path}/settings/study/publish(path=${study.getPath()})}"
               method="post" novalidate>
           <div class="alert alert-info" role="alert">
@@ -55,7 +55,7 @@
           </div>
         </form>
 
-        <form th:if="${study.published && !study.closed}" class="col-sm-12" action="#"
+        <form th:if="${study.published && !study.closed}" class="col-sm-12 p-0" action="#"
               th:action="@{/study/{path}/settings/study/close(path=${study.getPath()})}" method="post"
               novalidate>
           <div class="alert alert-warning" role="alert">
@@ -77,8 +77,8 @@
 
       <hr th:if="${!study.closed && !study.recruiting && study.published}"/>
       <div th:if="${!study.closed && !study.recruiting && study.published}">
-        <h5 class="col-sm-12">팀원 모집</h5>
-        <form class="col-sm-12" action="#"
+        <h5 class="col-sm-12 p-0">팀원 모집</h5>
+        <form class="col-sm-12 p-0" action="#"
               th:action="@{/study/{path}/settings/recruit/start(path=${study.getPath()})}"
               method="post" novalidate>
           <div class="alert alert-info" role="alert">
@@ -96,8 +96,8 @@
 
       <hr th:if="${!study.closed && study.recruiting && study.published}"/>
       <div th:if="${!study.closed && study.recruiting && study.published}">
-        <h5 class="col-sm-12">팀원 모집</h5>
-        <form class="col-sm-12" action="#"
+        <h5 class="col-sm-12 p-0">팀원 모집</h5>
+        <form class="col-sm-12 p-0" action="#"
               th:action="@{/study/{path}/settings/recruit/stop(path=${study.getPath()})}" method="post"
               novalidate>
           <div class="alert alert-primary" role="alert">
@@ -115,8 +115,8 @@
 
       <hr th:if="${!study.closed}"/>
       <div th:if="${!study.closed}">
-        <h5 class="col-sm-12">스터디 경로</h5>
-        <form class="col-sm-12 needs-validation" action="#"
+        <h5 class="col-sm-12 p-0">스터디 경로</h5>
+        <form class="col-sm-12 p-0 needs-validation" action="#"
               th:action="@{/study/{path}/settings/study/path(path=${study.getPath()})}" method="post"
               novalidate>
           <div class="alert alert-warning" role="alert">
@@ -142,8 +142,8 @@
 
       <hr th:if="${!study.closed}"/>
       <div th:if="${!study.closed}">
-        <h5 class="col-12">스터디 이름</h5>
-        <form class="needs-validation col-12" action="#"
+        <h5 class="col-12 p-0">스터디 이름</h5>
+        <form class="needs-validation col-12 p-0" action="#"
               th:action="@{/study/{path}/settings/study/title(path=${study.getPath()})}" method="post"
               novalidate>
           <div class="alert alert-warning" role="alert">
@@ -171,8 +171,8 @@
 
       <hr/>
       <div class="" th:if="${study.isRemovable()}">
-        <h5 class="col-sm-12 text-danger">스터디 삭제</h5>
-        <form class="col-sm-12" action="#" th:action="@{/study/{path}/settings/study/remove(path=${study.getPath()})}" method="post" novalidate>
+        <h5 class="col-sm-12 p-0 text-danger">스터디 삭제</h5>
+        <form class="col-sm-12 p-0" action="#" th:action="@{/study/{path}/settings/study/remove(path=${study.getPath()})}" method="post" novalidate>
           <div class="alert alert-danger" role="alert">
             스터디를 삭제하면 스터디 관련 모든 기록을 삭제하며 복구할 수 없습니다. <br/>
             <b>다음에 해당하는 스터디는 자동으로 삭제 됩니다.</b>
@@ -188,8 +188,8 @@
         </form>
       </div>
       <div th:if="${!study.isRemovable()}">
-        <h5 class="col-sm-12 text-danger">스터디 삭제</h5>
-        <form class="col-sm-12" action="#" th:action="@{/study/{path}/settings/study/remove(path=${study.getPath()})}" method="post" novalidate>
+        <h5 class="col-sm-12 p-0 text-danger">스터디 삭제</h5>
+        <form class="col-sm-12 p-0" action="#" th:action="@{/study/{path}/settings/study/remove(path=${study.getPath()})}" method="post" novalidate>
           <div class="alert alert-danger" role="alert">
             공개 중이고 모임을 했던 스터디는 삭제할 수 없습니다.
           </div>

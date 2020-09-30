@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 
+  void deleteByEvent(Event event);
+
   boolean existsByEventAndAccount(Event event, Account account);
 
   Enrollment findByEventAndAccount(Event event, Account account);
