@@ -38,21 +38,25 @@ public class Notification {
   @ManyToOne
   private Account account;
 
-  private LocalDateTime createdLocalDataTime;
+  private LocalDateTime createdDateTime;
 
   @Enumerated(EnumType.STRING)
   private NotificationType notificationType;
 
   @Builder(builderMethodName = "create")
   private Notification(String title, String link, String message, boolean checked, Account account,
-      LocalDateTime createdLocalDataTime, NotificationType notificationType) {
+      LocalDateTime createdDateTime, NotificationType notificationType) {
     this.title = title;
     this.link = link;
     this.message = message;
     this.checked = checked;
     this.account = account;
-    this.createdLocalDataTime = createdLocalDataTime;
+    this.createdDateTime = createdDateTime;
     this.notificationType = notificationType;
+  }
+
+  public void changeChecked(boolean checked) {
+    this.checked = checked;
   }
 
 }

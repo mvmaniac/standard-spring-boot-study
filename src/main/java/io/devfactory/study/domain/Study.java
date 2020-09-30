@@ -27,25 +27,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NamedEntityGraph(name = "Study.withAll", attributeNodes = {
-    @NamedAttributeNode("tags"),
-    @NamedAttributeNode("zones"),
-    @NamedAttributeNode("managers"),
-    @NamedAttributeNode("members")})
-@NamedEntityGraph(name = "Study.withTagsAndManagers", attributeNodes = {
-    @NamedAttributeNode("tags"),
-    @NamedAttributeNode("managers")})
-@NamedEntityGraph(name = "Study.withZonesAndManagers", attributeNodes = {
-    @NamedAttributeNode("zones"),
-    @NamedAttributeNode("managers")})
-@NamedEntityGraph(name = "Study.withManagers", attributeNodes = {
-    @NamedAttributeNode("managers")})
-@NamedEntityGraph(name = "Study.withMembers", attributeNodes = {
-    @NamedAttributeNode("members")})
-@NamedEntityGraph(name = "Study.withTagsAndZones", attributeNodes = {
-    @NamedAttributeNode("tags"),
-    @NamedAttributeNode("zones")})
-@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = PROTECTED)
 @Getter
 @Table(name = "tb_study")

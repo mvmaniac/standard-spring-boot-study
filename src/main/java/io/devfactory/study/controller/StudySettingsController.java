@@ -230,7 +230,14 @@ public class StudySettingsController {
       RedirectAttributes attributes) {
     final Study findStudy = studyService.findStudyToUpdateStatus(account, path);
     studyService.publish(findStudy);
-    attributes.addFlashAttribute("message", "스터디를 공개했습니다.");
+
+    String message = "스터디를 공개했습니다.";
+
+    if (!findStudy.isPublished()) {
+      message = "스터디를 비공개했습니다.";
+    }
+
+    attributes.addFlashAttribute("message", message);
     return REDIRECT.apply("/study/" + findStudy.getEncodedPath() + "/settings/study");
   }
 

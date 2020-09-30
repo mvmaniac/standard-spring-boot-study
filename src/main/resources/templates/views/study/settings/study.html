@@ -23,7 +23,7 @@
     <div class="col-8">
       <div th:replace="~{layouts/fragments/common :: message}"></div>
 
-      <div class="row">
+      <div>
         <h5 class="col-sm-12" th:unless="${study.published}">스터디 공개 및 종료</h5>
         <h5 class="col-sm-12" th:if="${study.published}">스터디 비공개 및 종료</h5>
 
@@ -76,7 +76,7 @@
       </div>
 
       <hr th:if="${!study.closed && !study.recruiting && study.published}"/>
-      <div class="" th:if="${!study.closed && !study.recruiting && study.published}">
+      <div th:if="${!study.closed && !study.recruiting && study.published}">
         <h5 class="col-sm-12">팀원 모집</h5>
         <form class="col-sm-12" action="#"
               th:action="@{/study/{path}/settings/recruit/start(path=${study.getPath()})}"
@@ -95,7 +95,7 @@
       </div>
 
       <hr th:if="${!study.closed && study.recruiting && study.published}"/>
-      <div class="" th:if="${!study.closed && study.recruiting && study.published}">
+      <div th:if="${!study.closed && study.recruiting && study.published}">
         <h5 class="col-sm-12">팀원 모집</h5>
         <form class="col-sm-12" action="#"
               th:action="@{/study/{path}/settings/recruit/stop(path=${study.getPath()})}" method="post"
@@ -114,7 +114,7 @@
       </div>
 
       <hr th:if="${!study.closed}"/>
-      <div class="" th:if="${!study.closed}">
+      <div th:if="${!study.closed}">
         <h5 class="col-sm-12">스터디 경로</h5>
         <form class="col-sm-12 needs-validation" action="#"
               th:action="@{/study/{path}/settings/study/path(path=${study.getPath()})}" method="post"
@@ -141,7 +141,7 @@
       </div>
 
       <hr th:if="${!study.closed}"/>
-      <div class="" th:if="${!study.closed}">
+      <div th:if="${!study.closed}">
         <h5 class="col-12">스터디 이름</h5>
         <form class="needs-validation col-12" action="#"
               th:action="@{/study/{path}/settings/study/title(path=${study.getPath()})}" method="post"
@@ -187,7 +187,7 @@
           </div>
         </form>
       </div>
-      <div class="" th:if="${!study.isRemovable()}">
+      <div th:if="${!study.isRemovable()}">
         <h5 class="col-sm-12 text-danger">스터디 삭제</h5>
         <form class="col-sm-12" action="#" th:action="@{/study/{path}/settings/study/remove(path=${study.getPath()})}" method="post" novalidate>
           <div class="alert alert-danger" role="alert">

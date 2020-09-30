@@ -6,6 +6,7 @@ import io.devfactory.account.domain.Account;
 import io.devfactory.study.domain.Study;
 import io.devfactory.study.dto.StudyDescriptionFormView;
 import io.devfactory.study.event.StudyCreatedEvent;
+import io.devfactory.study.event.StudyUpdateEvent;
 import io.devfactory.study.repository.StudyRepository;
 import io.devfactory.tag.domain.Tag;
 import io.devfactory.zone.domain.Zone;
@@ -55,6 +56,7 @@ public class StudyService {
   @Transactional
   public void updateStudyDescription(Study study, StudyDescriptionFormView view) {
     modelMapper.map(view, study);
+    eventPublisher.publishEvent(new StudyUpdateEvent(study, "스터디 소개를 수정했습니다."));
   }
 
   @Transactional
@@ -119,16 +121,19 @@ public class StudyService {
   @Transactional
   public void close(Study study) {
     study.close();
+    eventPublisher.publishEvent(new StudyUpdateEvent(study, "스터디를 종료했습니다."));
   }
 
   @Transactional
   public void startRecruit(Study study) {
     study.startRecruit();
+    eventPublisher.publishEvent(new StudyUpdateEvent(study, "팀원 모집을 시작합니다."));
   }
 
   @Transactional
   public void stopRecruit(Study study) {
     study.stopRecruit();
+    eventPublisher.publishEvent(new StudyUpdateEvent(study, "팀원 모집을 중단했습니다."));
   }
 
   public boolean isValidPath(String newPath) {
