@@ -7,14 +7,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.14.0",
-    "@yaireo/tagify": "^3.17.10",
+    "@fortawesome/fontawesome-free": "^5.15.0",
+    "@yaireo/tagify": "^3.19.4",
     "bootstrap": "^4.5.2",
     "cropper": "^4.1.0",
     "jdenticon": "^2.2.0",
     "jquery": "^3.5.1",
     "jquery-cropper": "^1.0.1",
-    "moment": "^2.27.0",
+    "mark.js": "^8.11.1",
+    "moment": "^2.29.0",
     "normalize.css": "^8.0.1",
     "summernote": "^0.8.18"
   }

@@ -89,4 +89,11 @@ public class StudyController {
     return REDIRECT.apply("/study/" + findStudy.getEncodedPath() + "/members");
   }
 
+  // TODO: 추후 제거, 테스트용 데이터 생성
+  @GetMapping("/study/data")
+  public String data(@CurrentUser Account account) {
+    studyService.generateTestStudy(account);
+    return REDIRECT.apply("/");
+  }
+
 }

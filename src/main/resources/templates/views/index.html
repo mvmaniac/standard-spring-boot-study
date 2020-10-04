@@ -1,22 +1,60 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      th:insert="~{layouts/layoutDefault :: default(~{::main}, _, ~{::script}, _, _)}">
+      th:insert="~{layouts/layoutDefault :: default(~{::main}, _, ~{::script}, ~{::style}, _)}">
+
+<head>
+  <title></title>
+  <style>
+    .jumbotron {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      margin-bottom: 0;
+      background-color: #fff;
+    }
+    @media (min-width: 768px) {
+      .jumbotron {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+      }
+    }
+
+    .jumbotron p:last-child {
+      margin-bottom: 0;
+    }
+
+    .jumbotron h1 {
+      font-weight: 300;
+    }
+
+    .jumbotron .container {
+      max-width: 40rem;
+    }
+  </style>
+</head>
+
 <body>
 
 <main th:ref="main">
-  <div class="alert alert-warning" th:if="${account != null && !account.emailVerified}">
-    스터디올레 가입을 완료하려면 <a href="#" th:href="@{/check-email}" class="alert-link">계정 인증 이메일을 확인</a>하세요.
-  </div>
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1>스터디올래</h1>
+      <p class="lead text-muted">
+        태그와 지역 기반으로 스터디를 찾고 참여하세요.<br/>
+        스터디 모임 관리 기능을 제공합니다.
+      </p>
+      <p>
+        <a th:href="@{/signup}" class="btn btn-primary my-2">회원 가입</a>
+      </p>
+    </div>
+  </section>
 
-  <div class="py-5 text-center">
-    <h2>스터디올래</h2>
+  <div class="d-flex justify-content-center pt-3">
+    <div th:replace="~{layouts/fragments/study :: study-list (studyList=${studyList})} "></div>
   </div>
 </main>
 
-<script>
-  (function () {
-  }());
-</script>
+<script th:src="@{/node_modules/moment/min/moment-with-locales.min.js}"></script>
+<script th:src="@{/js/common-date.js}"></script>
 
 </body>
 </html>

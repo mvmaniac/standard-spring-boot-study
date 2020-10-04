@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // @formatter:off
     http
       .authorizeRequests()
-        .antMatchers("/h2-console/**", "/", "/sign-up", "/check-email-token", "/email-login", "/login-by-email")
+        .antMatchers("/h2-console/**", "/", "/sign-up", "/check-email-token", "/email-login", "/login-by-email", "/search/study")
           .permitAll()
         .antMatchers(HttpMethod.GET, "/profile/*")
           .permitAll()

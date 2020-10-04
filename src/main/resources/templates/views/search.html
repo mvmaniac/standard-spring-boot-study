@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:insert="~{layouts/layoutDefault :: default(~{::main}, _, ~{::script}, ~{::style}, _)}">
+
+<head>
+  <title></title>
+  <style>
+    mark {
+      padding: 0;
+      background: transparent;
+      background: linear-gradient(to right, #f0ad4e 50%, transparent 50%);
+      background-position: right bottom;
+      background-size: 200% 100%;
+      transition: all .5s ease;
+      color: #fff;
+    }
+
+    mark.animate {
+      background-position: left bottom;
+      color: #000;
+    }
+  </style>
+</head>
+
+<body>
+
+<main th:ref="main">
+  <div class="py-5 text-center">
+    <p class="lead" th:if="${studyPage.getTotalElements() == 0}">
+      <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 스터디가 없습니다.
+    </p>
+    <p class="lead" th:if="${studyPage.getTotalElements() > 0}">
+      <strong th:text="${keyword}" id="keyword" class="context"></strong>에 해당하는 스터디를
+      <span th:text="${studyPage.getTotalElements()}"></span>개 찾았습니다.
+    </p>
+    <div class="dropdown">
+      <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        검색 결과 정렬 방식
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'publishedDateTime')}? active"
+           th:href="@{/search/study(sort='publishedDateTime,desc',keyword=${keyword})}">스터디 공개일
+        </a>
+        <a class="dropdown-item" th:classappend="${#strings.equals(sortProperty, 'memberCount')}? active"
+           th:href="@{/search/study(sort='memberCount,desc',keyword=${keyword})}">멤버수
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <div th:replace="~{layouts/fragments/study :: study-list (studyList=${studyPage.getContent()})}"></div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <div class="col-sm-10">
+      <nav>
+        <ul class="pagination justify-content-center">
+          <li class="page-item" th:classappend="${!studyPage.hasPrevious()}? disabled">
+            <a th:href="@{/search/study(keyword=${keyword},sort=${sortProperty}+',desc',page=${studyPage.getNumber() - 1})}"
+               class="page-link" tabindex="-1" aria-disabled="true">
+              Previous
+            </a>
+          </li>
+          <li class="page-item" th:classappend="${i == studyPage.getNumber()}? active"
+              th:each="i: ${#numbers.sequence(0, studyPage.getTotalPages() - 1)}">
+            <a th:href="@{/search/study(keyword=${keyword},sort=${sortProperty}+',desc',page=${i})}"
+               class="page-link" href="#" th:text="${i + 1}">1</a>
+          </li>
+          <li class="page-item" th:classappend="${!studyPage.hasNext()}? disabled">
+            <a th:href="@{/search/study(keyword=${keyword},sort=${sortProperty}+',desc',page=${studyPage.getNumber() + 1})}"
+               class="page-link">
+              Next
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</main>
+
+<script th:src="@{/node_modules/moment/min/moment-with-locales.min.js}"></script>
+<script th:src="@{/node_modules/mark.js/dist/jquery.mark.min.js}"></script>
+<script th:src="@{/js/common-date.js}"></script>
+<script>
+  $(function(){
+    var mark = function() {
+      // Read the keyword
+      var keyword = $("#keyword").text();
+
+      // Determine selected options
+      var options = {
+        "each": function(element) {
+          setTimeout(function() {
+            $(element).addClass("animate");
+          }, 150);
+        }
+      };
+
+      // Mark the keyword inside the context
+      $(".context").unmark({
+        done: function() {
+          $(".context").mark(keyword, options);
+        }
+      });
+    };
+
+    mark();
+  });
+</script>
+
+</body>
+</html>

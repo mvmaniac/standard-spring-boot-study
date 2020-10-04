@@ -26,6 +26,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @NoArgsConstructor(access = PROTECTED)
 @Getter
@@ -78,6 +79,9 @@ public class Study {
 
   private boolean useBanner;
 
+  @ColumnDefault("0")
+  private int memberCount;
+
   @Builder(builderMethodName = "create")
   private Study(String path, String title, String shortDescription, String fullDescription,
       String image, LocalDateTime publishedDateTime, LocalDateTime closedDateTime,
@@ -95,6 +99,7 @@ public class Study {
     this.published = published;
     this.closed = closed;
     this.useBanner = useBanner;
+    this.memberCount = 0;
   }
 
   public void addManagers(Account account) {
@@ -103,10 +108,12 @@ public class Study {
 
   public void addMembers(Account account) {
     this.members.add(account);
+    this.memberCount++;
   }
 
   public void removeMember(Account account) {
     this.members.remove(account);
+    this.memberCount--;
   }
 
   public boolean isJoinAble(UserAccount userAccount) {

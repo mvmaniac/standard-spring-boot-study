@@ -9,8 +9,10 @@ import io.devfactory.study.event.StudyCreatedEvent;
 import io.devfactory.study.event.StudyUpdateEvent;
 import io.devfactory.study.repository.StudyRepository;
 import io.devfactory.tag.domain.Tag;
+import io.devfactory.tag.repository.TagRepository;
 import io.devfactory.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class StudyService {
 
   private final StudyRepository studyRepository;
+  private final TagRepository tagRepository;
+
   private final ModelMapper modelMapper;
 
   private final ApplicationEventPublisher eventPublisher;
@@ -192,6 +196,25 @@ public class StudyService {
     final Study findStudy = studyRepository.findStudyOnlyByPath(path);
     checkIfExistingStudy(path, findStudy);
     return findStudy;
+  }
+
+  // TODO: 추후 제거, 테스트용 데이터 생성
+  @Transactional
+  public void generateTestStudy(Account account) {
+    for (int i = 0; i < 30; i++) {
+      final String randomValue = RandomString.make(5);
+      final Study newStudy = Study.create().title("테스트 스터디" + randomValue)
+          .path("test-" + randomValue)
+          .shortDescription("테스트용 스터디")
+          .fullDescription("test")
+          .build();
+
+      newStudy.publish();
+      final Study saveStudy = this.saveStudy(newStudy, account);
+
+      final Tag jpa = tagRepository.findByTitle("스프링");
+      saveStudy.getTags().add(jpa);
+    }
   }
 
 }

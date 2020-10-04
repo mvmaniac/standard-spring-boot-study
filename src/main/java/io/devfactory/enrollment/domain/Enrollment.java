@@ -12,12 +12,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.Table;
 
 import java.time.LocalDateTime;
 
 import static lombok.AccessLevel.PROTECTED;
 
+@NamedEntityGraph(
+    name = "Enrollment.withEventAndStudy",
+    attributeNodes = {@NamedAttributeNode(value = "event", subgraph = "study")},
+    subgraphs = @NamedSubgraph(name = "study", attributeNodes = @NamedAttributeNode("study"))
+)
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = PROTECTED)
 @Getter
