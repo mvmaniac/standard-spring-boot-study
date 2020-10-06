@@ -2,6 +2,6 @@ spring:
   profiles:
     active: test
 
-  datasource:
-    url: jdbc:tc:postgresql:///studytest
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+#  datasource:
+#    url: jdbc:tc:postgresql:///studytest
+#    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
