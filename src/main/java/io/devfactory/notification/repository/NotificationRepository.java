@@ -3,6 +3,7 @@ package io.devfactory.notification.repository;
 import io.devfactory.account.domain.Account;
 import io.devfactory.notification.domain.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
