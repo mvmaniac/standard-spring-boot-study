@@ -1,9 +1,6 @@
 package io.devfactory.global.config.security;
 
 import io.devfactory.global.config.security.service.UserAccountService;
-import java.util.Arrays;
-import java.util.List;
-import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -15,8 +12,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.springframework.security.web.header.writers.frameoptions.WhiteListedAllowFromStrategy;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+
+import javax.sql.DataSource;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
@@ -61,7 +59,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       // @formatter:off
       http
         .headers()
-          .addHeaderWriter(new XFrameOptionsHeaderWriter(new WhiteListedAllowFromStrategy(Arrays.asList("localhost"))))
           .frameOptions()
           .sameOrigin()
 
