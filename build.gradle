@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.4.3'
+  id 'org.springframework.boot' version '2.5.0'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id "com.github.node-gradle.node" version "2.2.4"
   id 'java'
@@ -7,8 +7,8 @@ plugins {
 
 group = 'io.devfactory'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_15
-targetCompatibility = JavaVersion.VERSION_15
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 configurations {
   compileOnly {
@@ -18,7 +18,6 @@ configurations {
 
 repositories {
   mavenCentral()
-  jcenter()
 }
 
 // querydsl 적용
@@ -55,7 +54,7 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-mail'
 
   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-  implementation 'org.modelmapper:modelmapper:2.3.8'
+  implementation 'org.modelmapper:modelmapper:2.4.3'
   implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.2'
 
   implementation 'com.querydsl:querydsl-jpa'
