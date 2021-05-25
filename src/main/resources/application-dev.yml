@@ -1,14 +1,16 @@
 spring:
   datasource:
-    initialization-mode: never
-    platform: postgres
-    # TODO: import.sql 로 변경
-    schema: classpath:sql/schema.sql
-    data: classpath:sql/data-${spring.datasource.platform}.sql
-
     url: jdbc:postgresql://localhost:5432/study
     username: dev
     password: dev
+
+  sql:
+    init:
+      platform: postgres
+      data-locations: classpath:sql/data-${spring.sql.init.platform}.sql
+
+  jpa:
+    defer-datasource-initialization: true
 
   mail:
     host: smtp.gmail.com
