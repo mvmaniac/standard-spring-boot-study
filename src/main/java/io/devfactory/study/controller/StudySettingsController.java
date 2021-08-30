@@ -1,8 +1,5 @@
 package io.devfactory.study.controller;
 
-import static io.devfactory.global.utils.FunctionUtils.REDIRECT;
-import static java.util.stream.Collectors.toList;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.devfactory.account.domain.Account;
@@ -17,24 +14,20 @@ import io.devfactory.tag.service.TagService;
 import io.devfactory.zone.domain.Zone;
 import io.devfactory.zone.dto.ZoneFormView;
 import io.devfactory.zone.repository.ZoneRepository;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Objects;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Objects;
+
+import static io.devfactory.global.utils.FunctionUtils.REDIRECT;
 
 @RequiredArgsConstructor
 @RequestMapping("/study/{path}/settings")
@@ -126,13 +119,13 @@ public class StudySettingsController {
     model.addAttribute(findStudy);
 
     model.addAttribute("tags", findStudy.getTags().stream()
-        .map(Tag::getTitle).collect(toList()));
+        .map(Tag::getTitle).toList());
 
     // @formatter:off
     final List<String> allTags = tagRepository.findAll()
         .stream()
         .map(Tag::getTitle)
-        .collect(toList())
+        .toList()
         ;
     // @formatter:on
 
@@ -171,13 +164,13 @@ public class StudySettingsController {
     model.addAttribute(findStudy);
 
     model.addAttribute("zones", findStudy.getZones().stream()
-        .map(Zone::getZoneName).collect(toList()));
+        .map(Zone::getZoneName).toList());
 
     // @formatter:off
     final List<String> allZones = zoneRepository.findAll()
         .stream()
         .map(Zone::getZoneName)
-        .collect(toList())
+        .toList()
         ;
     // @formatter:on
 

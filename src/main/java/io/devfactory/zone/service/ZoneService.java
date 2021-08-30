@@ -1,19 +1,18 @@
 package io.devfactory.zone.service;
 
-import static java.util.stream.Collectors.toList;
-
 import io.devfactory.zone.domain.Zone;
 import io.devfactory.zone.repository.ZoneRepository;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.List;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class ZoneService {
                 .province(split[2])
                 .build();
           })
-          .collect(toList());
+          .toList();
 
       zoneRepository.saveAll(zoneList);
     }

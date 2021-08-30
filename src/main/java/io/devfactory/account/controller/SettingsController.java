@@ -1,10 +1,5 @@
 package io.devfactory.account.controller;
 
-import static io.devfactory.account.controller.SettingsController.ROOT;
-import static io.devfactory.account.controller.SettingsController.SETTINGS;
-import static io.devfactory.global.utils.FunctionUtils.REDIRECT;
-import static java.util.stream.Collectors.toList;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.devfactory.account.domain.Account;
@@ -23,10 +18,6 @@ import io.devfactory.tag.repository.TagRepository;
 import io.devfactory.zone.domain.Zone;
 import io.devfactory.zone.dto.ZoneFormView;
 import io.devfactory.zone.repository.ZoneRepository;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +25,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+import static io.devfactory.account.controller.SettingsController.ROOT;
+import static io.devfactory.account.controller.SettingsController.SETTINGS;
+import static io.devfactory.global.utils.FunctionUtils.REDIRECT;
 
 @RequiredArgsConstructor
 @RequestMapping(ROOT + SETTINGS)
@@ -170,13 +164,13 @@ public class SettingsController {
     model.addAttribute(account);
 
     final Set<Tag> tags = accountService.getTags(account);
-    model.addAttribute("tags", tags.stream().map(Tag::getTitle).collect(toList()));
+    model.addAttribute("tags", tags.stream().map(Tag::getTitle).toList());
 
     // @formatter:off
     final List<String> allTags = tagRepository.findAll()
         .stream()
         .map(Tag::getTitle)
-        .collect(toList())
+        .toList()
       ;
     // @formatter:on
 
@@ -221,13 +215,13 @@ public class SettingsController {
     model.addAttribute(account);
 
     final Set<Zone> zones = accountService.getZones(account);
-    model.addAttribute("zones", zones.stream().map(Zone::getZoneName).collect(toList()));
+    model.addAttribute("zones", zones.stream().map(Zone::getZoneName).toList());
 
     // @formatter:off
     final List<String> allZones = zoneRepository.findAll()
         .stream()
         .map(Zone::getZoneName)
-        .collect(toList())
+        .toList()
         ;
     // @formatter:on
 
