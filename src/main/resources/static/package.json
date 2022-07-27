@@ -8,7 +8,7 @@
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.2",
-    "@yaireo/tagify": "^3.23.1",
+    "@yaireo/tagify": "^4.9.8",
     "bootstrap": "^4.6.0",
     "cropper": "^4.1.0",
     "jdenticon": "^3.1.1",
