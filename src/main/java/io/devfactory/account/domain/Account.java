@@ -1,32 +1,22 @@
 package io.devfactory.account.domain;
 
-import static javax.persistence.FetchType.EAGER;
-import static lombok.AccessLevel.PROTECTED;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import io.devfactory.account.dto.NotificationFormView;
 import io.devfactory.account.dto.ProfileFormView;
-import io.devfactory.study.domain.Study;
 import io.devfactory.tag.domain.Tag;
 import io.devfactory.zone.domain.Zone;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
+
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+import static jakarta.persistence.FetchType.EAGER;
+import static lombok.AccessLevel.PROTECTED;
 
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = PROTECTED)

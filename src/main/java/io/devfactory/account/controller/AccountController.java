@@ -8,7 +8,7 @@ import io.devfactory.account.repository.AccountRepository;
 import io.devfactory.account.service.AccountService;
 import io.devfactory.account.validator.SignUpFormRequestViewValidator;
 import java.util.Objects;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import io.devfactory.global.config.security.service.CurrentUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

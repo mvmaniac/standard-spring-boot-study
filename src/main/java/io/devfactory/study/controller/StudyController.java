@@ -11,7 +11,7 @@ import io.devfactory.study.service.StudyService;
 import io.devfactory.study.validator.StudyFormViewValidator;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;

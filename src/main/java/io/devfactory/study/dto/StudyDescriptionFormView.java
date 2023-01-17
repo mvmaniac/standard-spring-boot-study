@@ -2,7 +2,7 @@ package io.devfactory.study.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

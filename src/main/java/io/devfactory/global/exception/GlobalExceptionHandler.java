@@ -1,6 +1,6 @@
 package io.devfactory.global.exception;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import io.devfactory.account.domain.Account;
 import io.devfactory.global.config.security.service.CurrentUser;
 import lombok.extern.slf4j.Slf4j;

@@ -15,7 +15,7 @@ import io.devfactory.study.service.StudyService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,5 @@
 package io.devfactory.study.service;
 
-import static io.devfactory.study.dto.StudyFormView.VALID_PATH_PATTERN;
-
 import io.devfactory.account.domain.Account;
 import io.devfactory.study.domain.Study;
 import io.devfactory.study.dto.StudyDescriptionFormView;
@@ -12,12 +10,14 @@ import io.devfactory.tag.domain.Tag;
 import io.devfactory.tag.repository.TagRepository;
 import io.devfactory.zone.domain.Zone;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static io.devfactory.study.dto.StudyFormView.VALID_PATH_PATTERN;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
