@@ -12,10 +12,10 @@ INSERT INTO tb_account (
     , study_updated_by_web
     , study_updated_by_email
 ) VALUES (
-    nextval('hibernate_sequence')
+    nextval('tb_account_seq')
     , 'mvmaniaz@gmail.com'
     , 'dev'
-    , '{bcrypt}$2a$10$lVaCkvmGOIvljR8XokISE.9WNLVNG902yVNPkoAYEmNqPjDiPpVt.'
+    , '{bcrypt}$2a$10$vaolUpzOifC0RHrvDsGcv.ngExKo9AbczjivfiizFAjT9r208dBN.'
     , false
     , current_timestamp
     , true
@@ -41,10 +41,10 @@ INSERT INTO tb_account (
     , study_updated_by_web
     , study_updated_by_email
 ) VALUES (
-    nextval('hibernate_sequence')
+    nextval('tb_account_seq')
     , 'dev1@gmail.com'
     , 'dev1'
-    , '{bcrypt}$2a$10$lVaCkvmGOIvljR8XokISE.9WNLVNG902yVNPkoAYEmNqPjDiPpVt.'
+    , '{bcrypt}$2a$10$vaolUpzOifC0RHrvDsGcv.ngExKo9AbczjivfiizFAjT9r208dBN.'
     , false
     , current_timestamp
     , true
@@ -70,10 +70,10 @@ INSERT INTO tb_account (
     , study_updated_by_web
     , study_updated_by_email
 ) VALUES (
-    nextval('hibernate_sequence')
+    nextval('tb_account_seq')
     , 'dev2@gmail.com'
     , 'dev2'
-    , '{bcrypt}$2a$10$lVaCkvmGOIvljR8XokISE.9WNLVNG902yVNPkoAYEmNqPjDiPpVt.'
+    , '{bcrypt}$2a$10$vaolUpzOifC0RHrvDsGcv.ngExKo9AbczjivfiizFAjT9r208dBN.' -- 1234
     , false
     , current_timestamp
     , true

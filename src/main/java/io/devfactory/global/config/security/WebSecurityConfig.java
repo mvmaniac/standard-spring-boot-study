@@ -35,7 +35,7 @@ public class WebSecurityConfig {
   public SecurityFilterChain resourceChain(HttpSecurity http) throws Exception {
     // @formatter:off
     return http
-      .requestMatchers(matchers -> matchers.antMatchers(StaticResource.getResources("/node_modules/**")))
+      .securityMatchers(matcher -> matcher.requestMatchers(StaticResource.getResources("/node_modules/**")))
       .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
       .requestCache(RequestCacheConfigurer::disable)
       .securityContext(AbstractHttpConfigurer::disable)
@@ -48,10 +48,10 @@ public class WebSecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     // @formatter:off
     final var httpSecurity = http
-      .authorizeRequests(authorize -> authorize
-        .antMatchers("/h2-console/**", "/", "/sign-up", "/check-email-token", "/email-login", "/login-by-email", "/search/study")
+      .authorizeHttpRequests(authorize -> authorize
+        .requestMatchers("/h2-console/**", "/", "/sign-up", "/check-email-token", "/email-login", "/login-by-email", "/search/study")
           .permitAll()
-        .antMatchers(HttpMethod.GET, "/profile/*")
+        .requestMatchers(HttpMethod.GET, "/profile/*")
           .permitAll()
         .anyRequest()
           .authenticated())
@@ -63,7 +63,7 @@ public class WebSecurityConfig {
       // @formatter:off
       httpSecurity
         .headers(header -> header.frameOptions().sameOrigin())
-        .csrf(csrf -> csrf.ignoringAntMatchers("/h2-console/**"));
+        .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
       // @formatter:on
     }
 
