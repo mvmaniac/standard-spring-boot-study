@@ -1,14 +1,18 @@
 plugins {
-  id 'org.springframework.boot' version '3.1.0'
-  id 'io.spring.dependency-management' version '1.1.0'
-  id 'com.github.node-gradle.node' version '2.2.4'
+  id 'org.springframework.boot' version '3.3.5'
+  id 'io.spring.dependency-management' version '1.1.6'
+  id 'com.github.node-gradle.node' version '7.0.0'
   id 'java'
 }
 
 group = 'io.devfactory'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_19
-targetCompatibility = JavaVersion.VERSION_19
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
+}
 
 configurations {
   compileOnly {
@@ -32,11 +36,6 @@ clean.doLast() {
   file(querydslSrcDir).deleteDir()
 }
 
-node {
-  download = false
-  nodeModulesDir = file("${project.projectDir}/src/main/resources/static")
-}
-
 compileJava {
   dependsOn npmInstall
 }
@@ -50,32 +49,31 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-mail'
 
   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-  implementation 'org.modelmapper:modelmapper:3.1.0'
-  implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+  implementation 'org.modelmapper:modelmapper:3.2.1'
+  implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1'
 
   implementation "com.querydsl:querydsl-jpa:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
   annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
   annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
   annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 
-  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
   runtimeOnly 'com.h2database:h2'
   runtimeOnly 'org.postgresql:postgresql'
 
   developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
-
   testCompileOnly 'org.projectlombok:lombok'
   testAnnotationProcessor 'org.projectlombok:lombok'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
   testImplementation 'com.tngtech.archunit:archunit-junit5:0.23.1'
-  testImplementation 'org.testcontainers:junit-jupiter:1.17.3'
-  testImplementation 'org.testcontainers:postgresql:1.17.3'
+  testImplementation 'org.testcontainers:junit-jupiter:1.20.1'
+  testImplementation 'org.testcontainers:postgresql:1.20.1'
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
