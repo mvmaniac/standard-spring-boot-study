@@ -1,14 +1,17 @@
 plugins {
-  id 'org.springframework.boot' version '3.1.0'
-  id 'io.spring.dependency-management' version '1.1.0'
-  id 'com.github.node-gradle.node' version '2.2.4'
+  id 'org.springframework.boot' version '3.2.1'
+  id 'io.spring.dependency-management' version '1.1.4'
+  id 'com.github.node-gradle.node' version '7.0.0'
   id 'java'
 }
 
 group = 'io.devfactory'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaVersion.VERSION_19
-targetCompatibility = JavaVersion.VERSION_19
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_21
+  targetCompatibility = JavaVersion.VERSION_21
+}
 
 configurations {
   compileOnly {
@@ -32,11 +35,6 @@ clean.doLast() {
   file(querydslSrcDir).deleteDir()
 }
 
-node {
-  download = false
-  nodeModulesDir = file("${project.projectDir}/src/main/resources/static")
-}
-
 compileJava {
   dependsOn npmInstall
 }
@@ -50,8 +48,8 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-mail'
 
   implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
-  implementation 'org.modelmapper:modelmapper:3.1.0'
-  implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
+  implementation 'org.modelmapper:modelmapper:3.2.0'
+  implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1'
 
   implementation "com.querydsl:querydsl-jpa:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
   annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
